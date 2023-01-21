@@ -1,22 +1,15 @@
-import { useAccount } from 'wagmi'
-
-import { Account, Connect, NetworkSwitcher } from '../components'
+import useUniswapV3Liquidity from "../hooks/useUniswapV3Liquidity"
 
 function Page() {
-  const { isConnected } = useAccount()
+
+  const {data, isError, isLoading } = useUniswapV3Liquidity("0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b")
+  console.log(data)
+
 
   return (
     <>
-      <h1>wagmi + Next.js</h1>
+      <h1>Fetch on-chain data</h1>
 
-      <Connect />
-
-      {isConnected && (
-        <>
-          <Account />
-          <NetworkSwitcher />
-        </>
-      )}
     </>
   )
 }
