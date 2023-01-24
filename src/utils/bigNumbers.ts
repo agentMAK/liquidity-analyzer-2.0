@@ -19,3 +19,24 @@ export const mulBigNumbers = (
 
   return ethers.utils.parseEther(resultFloat.toFixed(18));
 };
+
+export const bigNumberToDecimal = (
+  value: BigNumber,
+  precison: number = 0
+):string => {
+  const bigNumberValue = BigNumber.from(value);
+  const remainder = bigNumberValue.mod(1e8);
+  const formattedValue = parseFloat(
+    ethers.utils.formatUnits(bigNumberValue.sub(remainder))
+  );
+
+  return formattedValue.toFixed(precison);
+};
+
+function formatNumberWithCommas(x:string) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export const formatCurrency = (value:BigNumber) => {
+  return formatNumberWithCommas(bigNumberToDecimal(value,2))
+}

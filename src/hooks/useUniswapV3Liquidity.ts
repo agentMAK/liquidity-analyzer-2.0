@@ -1,6 +1,6 @@
 import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS, FeeAmount} from "@uniswap/v3-sdk";
 import { useBalance, useContractRead } from "wagmi";
-import { WETH } from "../utils/constants/tokens";
+import { WETH } from "@constants/tokens";
 import V3_FACTORY_ABI from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
 
 
