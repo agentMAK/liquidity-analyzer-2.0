@@ -1,16 +1,16 @@
 import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS, FeeAmount} from "@uniswap/v3-sdk";
 import { useBalance, useContractRead } from "wagmi";
-import { WETH } from "@constants/tokens";
+import { NULL_ADDRESS, WETH } from "@constants/tokens";
 import V3_FACTORY_ABI from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
 
 
-const useUniswapV3Liquidity = (tokenAddress: `0x${string}`) => {
+const useUniswapV3Liquidity = (tokenAddress: `0x${string}`,feeAmount:FeeAmount) => {
 
   const poolAddress = useContractRead({
     address:V3_FACTORY_ADDRESS,
     abi: V3_FACTORY_ABI.abi,
     functionName: 'getPool',
-    args:[tokenAddress,WETH,FeeAmount.MEDIUM]
+    args:[tokenAddress,WETH,feeAmount]
   })
 
   const tokenBalance = useBalance({
@@ -22,11 +22,12 @@ const useUniswapV3Liquidity = (tokenAddress: `0x${string}`) => {
   const wethBalance = useBalance({
     address: poolAddress.data as `0x${string}`,
     token: WETH,
-    enabled:poolAddress.isFetched
+    enabled:poolAddress.isFetched 
   });
 
   return {
     data: {
+      isTokenPair: poolAddress.data !== NULL_ADDRESS,
       pairAddress: poolAddress.data,
       tokenBalance: tokenBalance.data?.value,
       wethBalance: wethBalance.data?.value,

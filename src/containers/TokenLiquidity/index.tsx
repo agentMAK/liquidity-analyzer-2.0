@@ -1,21 +1,23 @@
-import { Box, Flex, Td, Text} from "@chakra-ui/react";
+import { Box, Flex, Text, tokenToCSSVar } from "@chakra-ui/react";
 import { Thead, Tbody, Tr } from "@chakra-ui/react";
-import DataTable, { DTd, DTh } from "@components/DataTable";
-import useTokenPoolLiquidity from "@hooks/useTokenPoolLiquidity";
-import { WarningIcon } from '@chakra-ui/icons'
-import DataFetchingErrorMessage from "@components/DataFetchingErrorMessage";
-import { formatCurrency } from "@utils/bigNumbers";
+import DataTable, { DTh } from "@components/DataTable";
+import useTokenPairTVL from "@hooks/useTokenPairTVL";
+import { Exchanges } from "@utils/constants/exchanges";
+import TVLTableRow from "./components/TVLTableRow";
 
+type TokenLiquidityContainerProps = {
+  tokenAddress: `0x${string}`;
+};
 
-const TokenLiquidityContainer = (props: any): JSX.Element => {
-
-  const tokenPoolSize = useTokenPoolLiquidity(
-    "0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b"
-  );
+const TokenLiquidityContainer = ({
+  tokenAddress,
+}: TokenLiquidityContainerProps): JSX.Element => {
+  const tokenTVL: any = useTokenPairTVL(tokenAddress);
 
   return (
     <Box
-      {...props}
+      mt={"20px"}
+      mb={"50px"}
       width={"100%"}
       border={"1px solid #B9B6FC"}
       height={"500px"}
@@ -25,23 +27,22 @@ const TokenLiquidityContainer = (props: any): JSX.Element => {
         <Thead>
           <Tr>
             <DTh>Exchange</DTh>
-            <DTh>Pool Size</DTh>
+            <DTh>Total Value Locked</DTh>
           </Tr>
         </Thead>
         <Tbody>
-
-          <Tr>
-            <DTd isLoaded={!tokenPoolSize.isLoading} isError={tokenPoolSize.isError} isTitle={true}>
-              Uniswap V3
-            </DTd>
-            <DTd isLoaded={!tokenPoolSize.isLoading} isError={tokenPoolSize.isError}>
-              ${formatCurrency(tokenPoolSize.data)}
-            </DTd>
-          </Tr>
-
-          
-
-
+          {Object.values(Exchanges).map((exchange, index) => {
+            if (!tokenTVL.data[exchange].isZero()) 
+              return (
+                <TVLTableRow
+                  key={index}
+                  exchange={exchange}
+                  tvl ={tokenTVL.data[exchange]}
+                  isLoading={tokenTVL.isLoading}
+                  isError={tokenTVL.isError}
+                />
+              );
+          })}
         </Tbody>
       </DataTable>
     </Box>

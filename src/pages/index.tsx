@@ -37,7 +37,7 @@ function Index(): JSX.Element {
         </Text>
           <TokenDropBox />
       </Box>
-      <TokenLiquidityContainer mt={"20px"} mb={"50px"}/>
+      <TokenLiquidityContainer tokenAddress={"0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b"} />
     </Box>
   );
 }

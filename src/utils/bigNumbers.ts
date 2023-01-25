@@ -21,7 +21,7 @@ export const mulBigNumbers = (
 };
 
 export const bigNumberToDecimal = (
-  value: BigNumber,
+  value: BigNumber = BigNumber.from(0),
   precison: number = 0
 ):string => {
   const bigNumberValue = BigNumber.from(value);
