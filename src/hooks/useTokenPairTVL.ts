@@ -4,6 +4,7 @@ import { Exchanges } from "@utils/constants/exchanges";
 import { WETH } from "@utils/constants/tokens";
 import { BigNumber } from "ethers";
 import useCoinGeckoPrice from "./useCoinGeckoPrice";
+import useUniswapV2Liquidity from "./useUniswapV2Liquidity";
 import useUniswapV3Liquidity from "./useUniswapV3Liquidity";
 
 const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
@@ -22,6 +23,9 @@ const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
     [Exchanges.UNISWAPV3HIGH]: useUniswapV3Liquidity(
       tokenAddress,
       FeeAmount.HIGH
+    ),
+    [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(
+      tokenAddress,
     ),
   };
 

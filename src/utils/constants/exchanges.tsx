@@ -1,11 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 import FeeTierIcon from "@components/FeeTierIcon";
 
+
 export enum Exchanges {
   UNISWAPV3LOW = "Uniswap V3 (0.05%)",
   UNISWAPV3MEDIUM = "Uniswap V3 (0.3%)",
   UNISWAPV3HIGH = "Uniswap V3 (1%)",
+  UNISWAPV2 = "Uniswap V2",
 }
+
 
 export const DisplayExchange = {
   [Exchanges.UNISWAPV3LOW]: 
@@ -22,4 +25,5 @@ export const DisplayExchange = {
   Uniswap V3
   <FeeTierIcon>1%</FeeTierIcon>
 </Flex>,
+[Exchanges.UNISWAPV2]:"Uniswap V2"
 };

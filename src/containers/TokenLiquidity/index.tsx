@@ -2,6 +2,7 @@ import { Box, Flex, Text, tokenToCSSVar } from "@chakra-ui/react";
 import { Thead, Tbody, Tr } from "@chakra-ui/react";
 import DataTable, { DTh } from "@components/DataTable";
 import useTokenPairTVL from "@hooks/useTokenPairTVL";
+import useUniswapV2Liquidity from "@hooks/useUniswapV2Liquidity";
 import { Exchanges } from "@utils/constants/exchanges";
 import TVLTableRow from "./components/TVLTableRow";
 
@@ -13,6 +14,10 @@ const TokenLiquidityContainer = ({
   tokenAddress,
 }: TokenLiquidityContainerProps): JSX.Element => {
   const tokenTVL: any = useTokenPairTVL(tokenAddress);
+
+  const data = useUniswapV2Liquidity(tokenAddress)
+  console.log(data.data)
+
 
   return (
     <Box
