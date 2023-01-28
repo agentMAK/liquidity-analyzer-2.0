@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { Exchanges } from "@utils/constants/exchanges";
+import { Exchanges, FLAGGEDPOOLS } from "@utils/constants/exchanges";
 // @ts-ignore
 import DeployHelper from "@indexcoop/index-rebalance-utils/dist/utils/deploys/index";
 // @ts-ignore
@@ -15,6 +15,8 @@ import {
 } from "@indexcoop/index-rebalance-utils/dist/index-rebalances/utils/paramDetermination";
 import { useProvider } from "wagmi";
 import { FeeAmount } from "@uniswap/v3-sdk";
+import { BigNumber } from "ethers";
+
 
 const wrappedProviderExchanges = [
   Exchanges.UNISWAPV3LOW,
@@ -22,6 +24,12 @@ const wrappedProviderExchanges = [
   Exchanges.UNISWAPV3HIGH,
   "Sushiswap",
 ];
+
+const checkPool = (tokenAddress:string, exchange:Exchanges) => {
+  const pool = FLAGGEDPOOLS.find((pool) => pool.tokenAddress === tokenAddress && pool.exchange === exchange)
+  return pool ? true : false
+}
+
 
 const useMaxTrade = (
   tokenAddress: string,
@@ -34,42 +42,48 @@ const useMaxTrade = (
     provider = new DeployHelper(provider);
   }
 
-
   const result = useQuery(
     ["getMaxTrade", tokenAddress, exchange, maxSlippage],
     async () => {
+      if(checkPool(tokenAddress, exchange)) return BigNumber.from("0")
+      let data
       switch (exchange) {
         case Exchanges.UNISWAPV3LOW:
-          return await getUniswapV3Quote(
+          data = await getUniswapV3Quote(
             provider,
             tokenAddress,
             ether(maxSlippage),
             FeeAmount.LOW
           );
+          break;
         case Exchanges.UNISWAPV3MEDIUM:
-          return await getUniswapV3Quote(
+          data = await getUniswapV3Quote(
             provider,
             tokenAddress,
             ether(maxSlippage),
             FeeAmount.MEDIUM
           );
+          break;
         case Exchanges.UNISWAPV3HIGH:
-          return await getUniswapV3Quote(
+          data = await getUniswapV3Quote(
             provider,
             tokenAddress,
             ether(maxSlippage),
             FeeAmount.HIGH
           );
+          break;
         case Exchanges.UNISWAPV2:
-          return await getUniswapV2Quote(
+          data = await getUniswapV2Quote(
             provider,
             tokenAddress,
             ether(maxSlippage)
           );
+          break;
       }
+      return BigNumber.from(data?.size || "0")
     }
   );
-
+  result.isError ? result.data = BigNumber.from("0") : null
   return result;
 };
 

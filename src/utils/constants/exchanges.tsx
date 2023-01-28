@@ -27,3 +27,5 @@ export const DisplayExchange = {
 </Flex>,
 [Exchanges.UNISWAPV2]:"Uniswap V2"
 };
+
+export const FLAGGEDPOOLS = [{tokenAddress:'0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b', exchange:Exchanges.UNISWAPV3HIGH}]

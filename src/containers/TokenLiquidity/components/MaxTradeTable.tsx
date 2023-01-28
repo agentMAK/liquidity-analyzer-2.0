@@ -20,10 +20,7 @@ const MaxTradeTable = ({
   exchanges,
 }: MaxTradeTableProps): JSX.Element => {
 
-  console.log(exchanges)
-
-  const allMaxTrades = useAllMaxTrade(tokenAddress, 0.5);
-  console.log(allMaxTrades)
+  const {data, isLoading, isError} = useAllMaxTrade(tokenAddress, 0.5);
 
   return (
     <Box
@@ -43,7 +40,8 @@ const MaxTradeTable = ({
           {Object.values(exchanges).map((exchange, index) => {
               return (
                 <Tr key={index}>
-                  <Td>{allMaxTrades.data[exchange]?.size}</Td>
+                  <DTd isLoaded={!isLoading} isError={isError}>
+                    {bigNumberToDecimal(data[exchange]?.toString(),2)}</DTd>
                   <Td>$1000</Td>
                 </Tr>
               );

@@ -18,6 +18,8 @@ const useAllMaxTrade = (tokenAddress: string, maxSlippage: number, exchanges:str
 
   return {
     data: AllMaxTrade,
+    isError: !Object.values(fetchMaxTrade).every((exchange: any) => !exchange.isError),
+    isLoading: !Object.values(fetchMaxTrade).every((exchange: any) => !exchange.isLoading),
   };
 };
 

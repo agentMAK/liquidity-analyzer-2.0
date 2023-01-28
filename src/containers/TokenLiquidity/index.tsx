@@ -7,7 +7,6 @@ import { Exchanges } from "@utils/constants/exchanges";
 import { DEFAULTSLIPPAGE } from "@utils/constants/tokens";
 import MaxTradeTable from "./components/MaxTradeTable";
 import MaxTradeTableRow from "./components/MaxTradeTableRow";
-import TVLTable from "./components/TVLTable";
 import TVLTableRow from "./components/TVLTableRow";
 
 type TokenLiquidityContainerProps = {
