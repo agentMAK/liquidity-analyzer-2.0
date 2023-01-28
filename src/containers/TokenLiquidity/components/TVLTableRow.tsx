@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Tr } from "@chakra-ui/react";
+import { Tr } from "@chakra-ui/react";
 import { DTd } from "@components/DataTable";
 import { formatCurrency } from "@utils/bigNumbers";
 import { DisplayExchange, Exchanges } from "@utils/constants/exchanges";

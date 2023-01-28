@@ -1,14 +1,13 @@
-import { Box, Flex, Tbody, Td, Text, Thead, Tr } from "@chakra-ui/react";
+import { Box, Tbody, Td, Thead, Tr } from "@chakra-ui/react";
 import DataTable, { DTd, DTh } from "@components/DataTable";
 import useAllMaxTrade from "@hooks/useAllMaxTrades";
-import useMaxTrade from "@hooks/useMaxTrade";
+import useCoinGeckoPrice from "@hooks/useCoinGeckoPrice";
 import { _1000 } from "@uniswap/v2-sdk/dist/constants";
-import { bigNumberToDecimal, formatCurrency } from "@utils/bigNumbers";
-import { DisplayExchange, Exchanges } from "@utils/constants/exchanges";
-import { DEFAULTSLIPPAGE } from "@utils/constants/tokens";
-import { all } from "axios";
-import { BigNumber } from "ethers";
-import MaxTradeTableRow from "./MaxTradeTableRow";
+import {
+  bigNumberToDecimal,
+  formatCurrency,
+  mulBigNumbers,
+} from "@utils/bigNumbers";
 
 type MaxTradeTableProps = {
   tokenAddress: `0x${string}`;
@@ -20,7 +19,10 @@ const MaxTradeTable = ({
   exchanges,
 }: MaxTradeTableProps): JSX.Element => {
 
-  const {data, isLoading, isError} = useAllMaxTrade(tokenAddress, 0.5);
+
+  const maxTrade = useAllMaxTrade(tokenAddress, 0.5);
+  const tokenPrice = useCoinGeckoPrice(tokenAddress);
+
 
   return (
     <Box
@@ -33,18 +35,30 @@ const MaxTradeTable = ({
         <Thead>
           <Tr>
             <DTh>Max Trade Size</DTh>
-            <DTh>No of Trades</DTh>
+            <DTh>USD Value</DTh>
           </Tr>
         </Thead>
         <Tbody>
           {Object.values(exchanges).map((exchange, index) => {
-              return (
-                <Tr key={index}>
-                  <DTd isLoaded={!isLoading} isError={isError}>
-                    {bigNumberToDecimal(data[exchange]?.toString(),2)}</DTd>
-                  <Td>$1000</Td>
-                </Tr>
-              );
+            return (
+              <Tr key={index}>
+                <DTd
+                  isLoaded={!maxTrade.isLoading && !tokenPrice.isLoading}
+                  isError={maxTrade.isError || tokenPrice.isError}
+                >
+                  {bigNumberToDecimal(maxTrade.data[exchange]?.toString(), 2)}
+                </DTd>
+                <DTd
+                  isLoaded={!maxTrade.isLoading && !tokenPrice.isLoading}
+                  isError={maxTrade.isError || tokenPrice.isError}
+                >
+                  $
+                  {formatCurrency(
+                    mulBigNumbers(tokenPrice.data, maxTrade.data[exchange])
+                  )}
+                </DTd>
+              </Tr>
+            );
           })}
         </Tbody>
       </DataTable>

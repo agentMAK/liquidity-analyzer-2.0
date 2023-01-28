@@ -37,6 +37,6 @@ function formatNumberWithCommas(x:string) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export const formatCurrency = (value:BigNumber) => {
+export const formatCurrency = (value:BigNumber = BigNumber.from("0")) => {
   return formatNumberWithCommas(bigNumberToDecimal(value,2))
 }
