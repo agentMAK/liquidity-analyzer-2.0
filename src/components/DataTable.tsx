@@ -23,8 +23,8 @@ export default DataTable;
 export const DTh = (props: any): JSX.Element => {
   return (
     <Th
-      py={"28px"}
-      fontSize={"16px"}
+      py={"24px"}
+      fontSize={"14px"}
       fontWeight={"600"}
       color={"black"}
       {...props}

@@ -24,15 +24,12 @@ const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
       tokenAddress,
       FeeAmount.HIGH
     ),
-    [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(
-      tokenAddress,
-    ),
+    [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(tokenAddress),
   };
 
   const calculateTVL = (tokenBalance: BigNumber, wethBalance: BigNumber) => {
-
-    if(tokenBalance.isZero())
-      return BigNumber.from("0")
+    if (tokenBalance === undefined || tokenBalance.isZero())
+      return BigNumber.from("0");
 
     const tokenTVL = mulBigNumbers(tokenBalance, coinGeckoTokenPrice.data);
     const wethTVL = mulBigNumbers(wethBalance, coinGeckoEthPrice.data);
@@ -43,16 +40,30 @@ const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
   let tokenPairTVLs: any = {};
 
   Object.values(Exchanges).map((exchange) => {
-    tokenPairTVLs[exchange] = calculateTVL(
-      fetchLiquidity[exchange].data.tokenBalance,
-      fetchLiquidity[exchange].data.wethBalance
-    );
+    if (fetchLiquidity[exchange].data?.isTokenPair) {
+      tokenPairTVLs[exchange] = {
+        tvl: calculateTVL(
+          fetchLiquidity[exchange].data.tokenBalance,
+          fetchLiquidity[exchange].data.wethBalance
+        ),
+      };
+    }
   });
 
   return {
     data: tokenPairTVLs,
-    isError: coinGeckoTokenPrice.isError || coinGeckoEthPrice.isError || !Object.values(fetchLiquidity).every((exchange:any) => !exchange.isError),
-    isLoading: coinGeckoTokenPrice.isLoading || coinGeckoEthPrice.isLoading || !Object.values(fetchLiquidity).every((exchange:any) => !exchange.isLoading),
+    isError:
+      coinGeckoTokenPrice.isError ||
+      coinGeckoEthPrice.isError ||
+      !Object.values(fetchLiquidity).every(
+        (exchange: any) => !exchange.isError
+      ),
+    isLoading:
+      coinGeckoTokenPrice.isLoading ||
+      coinGeckoEthPrice.isLoading ||
+      !Object.values(fetchLiquidity).every(
+        (exchange: any) => !exchange.isLoading
+      ),
   };
 };
 

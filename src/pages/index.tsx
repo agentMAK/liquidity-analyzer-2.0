@@ -5,7 +5,7 @@ import TokenLiquidityContainer from "@containers/TokenLiquidity";
 function Index(): JSX.Element {
 
   return (
-    <Box maxWidth={["1100px"]} margin={"auto"} px={"25px"}>
+    <Box maxWidth={["1200px"]} margin={"auto"} px={"25px"}>
       <Box
         bgColor={"primary.75"}
         borderRadius="20px"
