@@ -23,7 +23,7 @@ import { useState } from "react";
 
 function IndexLiquidity(): JSX.Element {
   const [token, setToken] = useState<string>("DPI");
-  const [tokenChosen, setTokenChosen] = useState<boolean>(false);
+  const [tokenChosen, setTokenChosen] = useState<boolean>(true);
   const indexToken = INDEX_TOKENS[token as keyof typeof INDEX_TOKENS];
 
   const coinGeckoMarketData = useCoinGeckoMarketData([indexToken.coinGeckoId]);
