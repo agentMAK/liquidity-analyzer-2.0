@@ -2,7 +2,17 @@ export const WETH = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
 export const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const DEFAULTSLIPPAGE = 0.5;
 
-export const TOKENLIQUIDITYLIST = {
+export type TokenList = {
+  [key: string]: {
+    name: string;
+    symbol: string;
+    address: string;
+    imageSrc: string;
+    coinGeckoId?: string;
+  };
+}
+
+export const TOKEN_LIQUIDITY_LIST = {
   DPI: {
     name: "DeFi Pulse Index",
     symbol: "DPI",
@@ -51,5 +61,30 @@ export const TOKENLIQUIDITYLIST = {
     symbol: "INDEX",
     address: "0x0954906da0bf32d5479e25f46056d22f08464cab",
     imageSrc: "/images/tokens/index.png",
+  },
+};
+
+export const INDEX_TOKENS = {
+  DPI: {
+    name: "DeFi Pulse Index",
+    symbol: "DPI",
+    address: "0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b",
+    imageSrc: "/images/tokens/dpi.png",
+    coinGeckoId: "defipulse-index",
+  },
+  BED: {
+    name: "Bankless BED Index",
+    symbol: "BED",
+    address: "0x2af1df3ab0ab157e1e2ad8f88a7d04fbea0c7dc6",
+    imageSrc: "/images/tokens/bed.png",
+    coinGeckoId: "bankless-bed-index",
+  },
+
+  MVI: {
+    name: "Metaverse Index",
+    symbol: "MVI",
+    address: "0x72e364f2abdc788b7e918bc238b21f109cd634d7",
+    imageSrc: "/images/tokens/mvi.png",
+    coinGeckoId: "metaverse-index",
   },
 };

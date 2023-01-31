@@ -1,9 +1,9 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Link, textDecoration } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 
 const NavItem = (props: any): JSX.Element => {
   return (
-    <Button
+    <Link href={props.href} _hover={{textDecoration:"none"}}><Button
       bgColor={"primary.50"}
       textColor={"#EEEEEE"}
       fontWeight={"500"}
@@ -16,7 +16,7 @@ const NavItem = (props: any): JSX.Element => {
       {...props}
     >
       {props.children}
-    </Button>
+    </Button></Link>
   );
 };
 
@@ -36,8 +36,8 @@ const Header = (): JSX.Element => {
           height={"48px"}
         />
         <Flex gap={"20px"}>
-          <NavItem>Token Liquidity</NavItem>
-          <NavItem isDisabled>Index Liquidity</NavItem>
+          <NavItem href="/">Token Liquidity</NavItem>
+          <NavItem href="/index-liquidity">Index Liquidity</NavItem>
           <NavItem isDisabled>NAV Analyzer</NavItem>
         </Flex>
         <Box></Box>

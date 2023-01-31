@@ -7,7 +7,7 @@ import {
 import DataTable, { DTd, DTh } from "@components/DataTable";
 import SlippageMessage from "@components/SlippageMessage";
 import useAllMaxTrade from "@hooks/useAllMaxTrades";
-import useCoinGeckoPrice from "@hooks/useCoinGeckoPrice";
+import useCoinGeckoPrice from "@hooks/CoinGecko/useCoinGeckoPrice";
 import { _1000 } from "@uniswap/v2-sdk/dist/constants";
 import {
   bigNumberToDecimal,

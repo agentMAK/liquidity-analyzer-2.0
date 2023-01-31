@@ -82,7 +82,6 @@ const useMaxTrade = (
           );
           break;
       }
-      console.log(data)
       return BigNumber.from(data?.size || "0")
     }
   );

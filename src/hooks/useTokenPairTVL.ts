@@ -3,9 +3,9 @@ import { mulBigNumbers } from "@utils/bigNumbers";
 import { Exchanges } from "@utils/constants/exchanges";
 import { WETH } from "@utils/constants/tokens";
 import { BigNumber } from "ethers";
-import useCoinGeckoPrice from "./useCoinGeckoPrice";
-import useUniswapV2Liquidity from "./useUniswapV2Liquidity";
-import useUniswapV3Liquidity from "./useUniswapV3Liquidity";
+import useUniswapV2Liquidity from "./Liquidity/useUniswapV2Liquidity";
+import useUniswapV3Liquidity from "./Liquidity/useUniswapV3Liquidity";
+import useCoinGeckoPrice from "./CoinGecko/useCoinGeckoPrice";
 
 const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
   const coinGeckoTokenPrice = useCoinGeckoPrice(tokenAddress);

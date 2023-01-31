@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import TokenDropBox from "@components/TokenDropBox";
 import TokenLiquidityContainer from "@containers/TokenLiquidity";
-import { TOKENLIQUIDITYLIST } from "@utils/constants/tokens";
+import { TOKEN_LIQUIDITY_LIST } from "@utils/constants/tokens";
 import { trimAddress } from "@utils/formatting";
 import { useState } from "react";
 
@@ -24,14 +24,14 @@ function Index(): JSX.Element {
           </Heading>
           <Box>
             <Heading fontSize={"24px"} fontWeight={"500"} textAlign={"right"}>
-              {TOKENLIQUIDITYLIST[token as keyof typeof TOKENLIQUIDITYLIST].symbol}
+              {TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST].symbol}
             </Heading>
             <Link
               color={"primary.80"}
               fontSize={"12px"}
               textDecoration={"underline"}
             >
-             {trimAddress(TOKENLIQUIDITYLIST[token as keyof typeof TOKENLIQUIDITYLIST].address)}
+             {trimAddress(TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST].address)}
             </Link>
           </Box>
         </Flex>
@@ -40,9 +40,9 @@ function Index(): JSX.Element {
           on popular DeXs. This dashboard uses live on chain data to produce
           results.
         </Text>
-          <TokenDropBox setToken={setToken}/>
+          <TokenDropBox setToken={setToken} tokenKey={token} tokenList={TOKEN_LIQUIDITY_LIST}/>
       </Box>
-      <TokenLiquidityContainer tokenAddress={TOKENLIQUIDITYLIST[token as keyof typeof TOKENLIQUIDITYLIST].address as `0x${string}`} />
+      <TokenLiquidityContainer tokenAddress={TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST].address as `0x${string}`} />
     </Box>
   );
 }

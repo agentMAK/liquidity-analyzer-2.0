@@ -11,14 +11,16 @@ import {
   MenuOptionGroup,
   MenuDivider,
 } from "@chakra-ui/react";
-import { TOKENLIQUIDITYLIST } from "@utils/constants/tokens";
-import React, { useState } from "react";
+import { TokenList, TOKEN_LIQUIDITY_LIST } from "@utils/constants/tokens";
+import React, { useEffect, useState } from "react";
 import { Icon, createIcon } from "@chakra-ui/react";
 
 type TokenDropBoxProps = {
   setToken: (token: string) => void;
+  tokenKey: string;
+  tokenList: TokenList
 };
-const TokenDropBox = ({ setToken }: TokenDropBoxProps): JSX.Element => {
+const TokenDropBox = ({ setToken, tokenKey, tokenList }: TokenDropBoxProps): JSX.Element => {
   const TokenIcon = createIcon({
     displayName: "TokenIcon",
     viewBox: "0 0 20 20",
@@ -31,6 +33,14 @@ const TokenDropBox = ({ setToken }: TokenDropBoxProps): JSX.Element => {
     d: "M0 0L5 5L10 0H0Z",
   });
 
+  const  [menuState, setMenuState] = useState({icon: <TokenIcon boxSize={"20px"} />, token: "Choose A Token"})
+  const [dropdownClicked,setDropdownClicked] = useState(false)
+
+  useEffect(() => {
+    const token = tokenList[tokenKey as keyof typeof tokenList]
+    dropdownClicked ? setMenuState({icon: <Image src={token.imageSrc} boxSize={"20px"} alt={token.name} />, token: token.symbol}) : null
+  }, [dropdownClicked, tokenKey, tokenList])
+
   return (
     <Menu>
       <MenuButton
@@ -41,12 +51,13 @@ const TokenDropBox = ({ setToken }: TokenDropBoxProps): JSX.Element => {
         borderRadius={"50px"}
         as={Button}
         rightIcon={<DropDownIcon boxSize={"10px"} mr={"10px"} />}
-        leftIcon={<TokenIcon boxSize={"20px"} />}
+        leftIcon={menuState.icon}
         _hover={{ bg: "black" }}
         _focus={{ bg: "black" }}
         _active={{ bg: "black" }}
+        textAlign={"left"}
       >
-        Choose A Token
+       {menuState.token}
       </MenuButton>
       <MenuList
         bg={"black"}
@@ -54,9 +65,10 @@ const TokenDropBox = ({ setToken }: TokenDropBoxProps): JSX.Element => {
         padding={"12px"}
         borderRadius={"12px"}
         borderColor="black"
+        onClick={() => setDropdownClicked(true)}
       >
         <MenuGroup title="Choose a Token" mx={"0px"} mb={"9px"} mt={"0px"}>
-          {Object.values(TOKENLIQUIDITYLIST).map((token, index) => {
+          {Object.values(tokenList).map((token, index) => {
             return (
               <MenuItem
                 bg={"gray.800"}
