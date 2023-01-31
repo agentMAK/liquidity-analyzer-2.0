@@ -23,12 +23,13 @@ import { useState } from "react";
 
 function IndexLiquidity(): JSX.Element {
   const [token, setToken] = useState<string>("DPI");
+  const [tokenChosen, setTokenChosen] = useState<boolean>(false);
   const indexToken = INDEX_TOKENS[token as keyof typeof INDEX_TOKENS];
 
   const coinGeckoMarketData = useCoinGeckoMarketData([indexToken.coinGeckoId]);
 
   const tokenComponents = useSetComponents(
-    indexToken.symbol.toLowerCase() as TokenSet
+    indexToken.tokenSetId as TokenSet
   );
 
   const totalMarketCap = useCoinGeckoTotalMarketCap();
@@ -71,6 +72,8 @@ function IndexLiquidity(): JSX.Element {
               setToken={setToken}
               tokenKey={token}
               tokenList={INDEX_TOKENS}
+              tokenChosen={tokenChosen}
+              setTokenChosen={setTokenChosen}
             />
             <Box>
               <Text fontSize={"12px"} fontWeight={"500"}>
@@ -95,7 +98,7 @@ function IndexLiquidity(): JSX.Element {
           <Text fontWeight={"500"} fontSize={"24px"}>
             Total Market Cap: <br />$
             <Skeleton as="span" isLoaded={!totalMarketCap.isLoading}>
-              {totalMarketCap.isLoading
+              {!tokenChosen ? "" : totalMarketCap.isLoading
                 ? "loading"
                 : ethers.utils.commify(totalMarketCap.data)}
             </Skeleton>
@@ -106,7 +109,7 @@ function IndexLiquidity(): JSX.Element {
             </Text>
             {" $"}
             <Skeleton as="span" isLoaded={!coinGeckoMarketData.isLoading}>
-              {coinGeckoMarketData.isLoading
+              {!tokenChosen ? "" : coinGeckoMarketData.isLoading
                 ? "loading"
                 : ethers.utils.commify(
                     coinGeckoMarketData.data[token].market_cap
@@ -118,7 +121,7 @@ function IndexLiquidity(): JSX.Element {
             </Text>
             {" $"}
             <Skeleton as="span" isLoaded={!tokenComponents.isLoading}>
-              {tokenComponents.isLoading
+              {!tokenChosen ? "" : tokenComponents.isLoading
                 ? "loading"
                 : ethers.utils.commify(
                     calculateNetAssetValue(tokenComponents.data).toFixed(2)
@@ -127,7 +130,7 @@ function IndexLiquidity(): JSX.Element {
           </Text>
         </Box>
       </Flex>
-      <IndexLiquidityContainer tokenComponents={tokenComponents} />
+      <IndexLiquidityContainer tokenComponents={tokenComponents} tokenChosen={tokenChosen} />
     </Box>
   );
 }

@@ -8,6 +8,7 @@ export enum Exchanges {
   UNISWAPV3MEDIUM = "Uniswap V3 (0.3%)",
   UNISWAPV3HIGH = "Uniswap V3 (1%)",
   UNISWAPV2 = "Uniswap V2",
+  SUSHIWAP = 'Sushiswap',
 }
 
 
@@ -26,9 +27,12 @@ export const DisplayExchange = {
   Uniswap V3
   <FeeTierIcon>1%</FeeTierIcon>
 </Flex>,
-[Exchanges.UNISWAPV2]:"Uniswap V2"
+[Exchanges.UNISWAPV2]:"Uniswap V2",
+[Exchanges.SUSHIWAP]:"Sushiswap"
 };
 
 export const FLAGGEDPOOLS = [{tokenAddress:'0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b', exchange:Exchanges.UNISWAPV3HIGH}]
 
 export const MINIMUM_LIQUIDITY = parseUnits("10");
+
+export const SUSHI_FACTORY_ADDRESS = '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac'

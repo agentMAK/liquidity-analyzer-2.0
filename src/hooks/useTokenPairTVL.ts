@@ -6,6 +6,7 @@ import { BigNumber } from "ethers";
 import useUniswapV2Liquidity from "./Liquidity/useUniswapV2Liquidity";
 import useUniswapV3Liquidity from "./Liquidity/useUniswapV3Liquidity";
 import useCoinGeckoPrice from "./CoinGecko/useCoinGeckoPrice";
+import useSushiswapLiquidity from "./Liquidity/useSushiswapLiquidity";
 
 const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
   const coinGeckoTokenPrice = useCoinGeckoPrice(tokenAddress);
@@ -25,6 +26,7 @@ const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
       FeeAmount.HIGH
     ),
     [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(tokenAddress),
+    [Exchanges.SUSHIWAP]: useSushiswapLiquidity(tokenAddress),
   };
 
   const calculateTVL = (tokenBalance: BigNumber, wethBalance: BigNumber) => {

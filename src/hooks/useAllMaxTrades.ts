@@ -9,6 +9,7 @@ const useAllMaxTrade = (tokenAddress: string, maxSlippage: number, exchanges:str
     [Exchanges.UNISWAPV3MEDIUM]: useMaxTrade(tokenAddress, Exchanges.UNISWAPV3MEDIUM, maxSlippage,!exchanges.includes(Exchanges.UNISWAPV3MEDIUM)),
     [Exchanges.UNISWAPV3HIGH]: useMaxTrade(tokenAddress, Exchanges.UNISWAPV3HIGH, maxSlippage,!exchanges.includes(Exchanges.UNISWAPV3HIGH)),
     [Exchanges.UNISWAPV2]: useMaxTrade(tokenAddress, Exchanges.UNISWAPV2, maxSlippage,!exchanges.includes(Exchanges.UNISWAPV2)),
+    [Exchanges.SUSHIWAP]: useMaxTrade(tokenAddress, Exchanges.SUSHIWAP, maxSlippage,!exchanges.includes(Exchanges.SUSHIWAP)),
   };
 
   let AllMaxTrade: any = {};

@@ -1,7 +1,10 @@
 import { Box, Tbody, Td, Thead, Tr } from "@chakra-ui/react";
 import DataTable, { DTd, DTh } from "@components/DataTable";
+import { Exchanges } from "@utils/constants/exchanges";
 
-const MaxTradeTableBlank = (): JSX.Element => {
+
+
+const MaxTradeTableBlank = (props: any): JSX.Element => {
   return (
     <Box
       border={"1px solid #B9B6FC"}
@@ -17,11 +20,19 @@ const MaxTradeTableBlank = (): JSX.Element => {
           </Tr>
         </Thead>
         <Tbody>
-          {Array(4).fill(null).map((_,index) => {
+          {props.isLoading ?
+          Array(4).fill(null).map((_,index) => {
             return (
               <Tr key={index}>
                 <DTd isLoaded={false}>Blank</DTd>
                 <DTd isLoaded={false}>Blank</DTd>
+              </Tr>
+            );
+          }) : Object.values(Exchanges).map((exchangeKey, index) => {
+            return (
+              <Tr key={index}>
+                <DTd>&nbsp;</DTd>
+                <DTd />
               </Tr>
             );
           })}
@@ -32,3 +43,7 @@ const MaxTradeTableBlank = (): JSX.Element => {
 };
 
 export default MaxTradeTableBlank;
+
+MaxTradeTableBlank.defaultProps = {
+  isLoaded: false,
+};

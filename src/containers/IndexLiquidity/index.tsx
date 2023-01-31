@@ -4,13 +4,13 @@ import useSetComponents, { TokenSet } from "@hooks/useSetComponents";
 
 type IndexLiquidityContainerProps = {
   tokenComponents: any;
+  tokenChosen: boolean;
 };
 
 const IndexLiquidityContainer = ({
   tokenComponents,
+  tokenChosen,
 }: IndexLiquidityContainerProps): JSX.Element => {
-
-
   return (
     <Box mt={"20px"} mb={"50px"} width={"100%"} display={"flex"} gap={"12px"}>
       <Box
@@ -27,7 +27,9 @@ const IndexLiquidityContainer = ({
             </Tr>
           </Thead>
           <Tbody>
-            {tokenComponents.isLoading ? (
+            {!tokenChosen ? (
+              <Tr></Tr>
+            ) : tokenComponents.isLoading ? (
               <Tr>
                 <DTd isLoaded={false}>Loading</DTd>
                 <DTd isLoaded={false}>Loading</DTd>

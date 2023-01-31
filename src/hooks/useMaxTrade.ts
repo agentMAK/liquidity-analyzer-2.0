@@ -17,7 +17,6 @@ import { useProvider } from "wagmi";
 import { FeeAmount } from "@uniswap/v3-sdk";
 import { BigNumber } from "ethers";
 
-
 const wrappedProviderExchanges = [
   Exchanges.UNISWAPV3LOW,
   Exchanges.UNISWAPV3MEDIUM,
@@ -25,11 +24,12 @@ const wrappedProviderExchanges = [
   "Sushiswap",
 ];
 
-const checkPool = (tokenAddress:string, exchange:Exchanges) => {
-  const pool = FLAGGEDPOOLS.find((pool) => pool.tokenAddress === tokenAddress && pool.exchange === exchange)
-  return pool ? true : false
-}
-
+const checkPool = (tokenAddress: string, exchange: Exchanges) => {
+  const pool = FLAGGEDPOOLS.find(
+    (pool) => pool.tokenAddress === tokenAddress && pool.exchange === exchange
+  );
+  return pool ? true : false;
+};
 
 const useMaxTrade = (
   tokenAddress: string,
@@ -37,8 +37,7 @@ const useMaxTrade = (
   maxSlippage: number,
   disabled: boolean = false
 ) => {
-
-    let provider = useProvider();
+  let provider = useProvider();
   if (wrappedProviderExchanges.includes(exchange)) {
     provider = new DeployHelper(provider);
   }
@@ -46,9 +45,9 @@ const useMaxTrade = (
   const result = useQuery(
     ["getMaxTrade", tokenAddress, exchange, maxSlippage],
     async () => {
-      if(checkPool(tokenAddress, exchange)) return BigNumber.from("0")
-      if(disabled) return BigNumber.from("0")
-      let data
+      if (checkPool(tokenAddress, exchange)) return BigNumber.from("0");
+      if (disabled) return BigNumber.from("0");
+      let data;
       switch (exchange) {
         case Exchanges.UNISWAPV3LOW:
           data = await getUniswapV3Quote(
@@ -81,11 +80,18 @@ const useMaxTrade = (
             ether(maxSlippage)
           );
           break;
+        case Exchanges.SUSHIWAP:
+          data = await getSushiswapQuote(
+            provider,
+            tokenAddress,
+            ether(maxSlippage)
+          );
+          break;
       }
-      return BigNumber.from(data?.size || "0")
+      return BigNumber.from(data?.size || "0");
     }
   );
-  result.isError ? result.data = BigNumber.from("0") : null
+  result.isError ? (result.data = BigNumber.from("0")) : null;
   return result;
 };
 

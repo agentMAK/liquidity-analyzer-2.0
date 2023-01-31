@@ -19,8 +19,10 @@ type TokenDropBoxProps = {
   setToken: (token: string) => void;
   tokenKey: string;
   tokenList: TokenList
+  tokenChosen: boolean,
+  setTokenChosen: (tokenChosen: boolean) => void
 };
-const TokenDropBox = ({ setToken, tokenKey, tokenList }: TokenDropBoxProps): JSX.Element => {
+const TokenDropBox = ({ setToken, tokenKey, tokenList, tokenChosen, setTokenChosen }: TokenDropBoxProps): JSX.Element => {
   const TokenIcon = createIcon({
     displayName: "TokenIcon",
     viewBox: "0 0 20 20",
@@ -34,12 +36,11 @@ const TokenDropBox = ({ setToken, tokenKey, tokenList }: TokenDropBoxProps): JSX
   });
 
   const  [menuState, setMenuState] = useState({icon: <TokenIcon boxSize={"20px"} />, token: "Choose A Token"})
-  const [dropdownClicked,setDropdownClicked] = useState(false)
 
   useEffect(() => {
     const token = tokenList[tokenKey as keyof typeof tokenList]
-    dropdownClicked ? setMenuState({icon: <Image src={token.imageSrc} boxSize={"20px"} alt={token.name} />, token: token.symbol}) : null
-  }, [dropdownClicked, tokenKey, tokenList])
+    tokenChosen ? setMenuState({icon: <Image src={token.imageSrc} boxSize={"20px"} alt={token.name} />, token: token.symbol}) : null
+  }, [tokenChosen, tokenKey, tokenList])
 
   return (
     <Menu>
@@ -65,7 +66,7 @@ const TokenDropBox = ({ setToken, tokenKey, tokenList }: TokenDropBoxProps): JSX
         padding={"12px"}
         borderRadius={"12px"}
         borderColor="black"
-        onClick={() => setDropdownClicked(true)}
+        onClick={() => setTokenChosen(true)}
       >
         <MenuGroup title="Choose a Token" mx={"0px"} mb={"9px"} mt={"0px"}>
           {Object.values(tokenList).map((token, index) => {
