@@ -40,3 +40,4 @@ function formatNumberWithCommas(x:string) {
 export const formatCurrency = (value:BigNumber = BigNumber.from("0")) => {
   return formatNumberWithCommas(bigNumberToDecimal(value,2))
 }
+

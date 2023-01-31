@@ -30,7 +30,7 @@ const DataFetchingErrorMessage = (props: any): JSX.Element => {
           minWidth={"0"}
           borderRadius={"16px"}
           _hover={{ bg: "none" }}
-          aria-label="Add to friends"
+          aria-label="Error"
           icon={<WarningIcon color="red.500" />}
         ></IconButton>
       </PopoverTrigger>

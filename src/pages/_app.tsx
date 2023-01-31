@@ -1,5 +1,4 @@
 import type { AppProps } from "next/app";
-import NextHead from "next/head";
 import * as React from "react";
 import { WagmiConfig } from "wagmi";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -12,6 +11,7 @@ import "@fontsource/ibm-plex-sans/400.css"
 import "@fontsource/ibm-plex-sans/500.css"
 import "@fontsource/ibm-plex-sans/600.css"
 import "@fontsource/ibm-plex-sans/700.css"
+import Head from "@components/Head";
 
 
 function App({ Component, pageProps }: AppProps) {
@@ -21,9 +21,7 @@ function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <WagmiConfig client={client}>
         <ChakraProvider theme={theme}>
-          <NextHead>
-            <title>Index Coop - Liquidity Analyzer</title>
-          </NextHead>
+          <Head />
           <Header />
           {mounted && <Component {...pageProps} />}
         </ChakraProvider>

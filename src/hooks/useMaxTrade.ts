@@ -35,6 +35,7 @@ const useMaxTrade = (
   tokenAddress: string,
   exchange: Exchanges,
   maxSlippage: number,
+  disabled: boolean = false
 ) => {
 
     let provider = useProvider();
@@ -46,6 +47,7 @@ const useMaxTrade = (
     ["getMaxTrade", tokenAddress, exchange, maxSlippage],
     async () => {
       if(checkPool(tokenAddress, exchange)) return BigNumber.from("0")
+      if(disabled) return BigNumber.from("0")
       let data
       switch (exchange) {
         case Exchanges.UNISWAPV3LOW:
@@ -80,6 +82,7 @@ const useMaxTrade = (
           );
           break;
       }
+      console.log(data)
       return BigNumber.from(data?.size || "0")
     }
   );

@@ -2,6 +2,7 @@ import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS, FeeAmount} from "@uniswap/v3-sdk
 import { useBalance, useContractRead } from "wagmi";
 import { NULL_ADDRESS, WETH } from "@constants/tokens";
 import V3_FACTORY_ABI from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
+import { MINIMUM_LIQUIDITY } from "@utils/constants/exchanges";
 
 
 const useUniswapV3Liquidity = (tokenAddress: `0x${string}`,feeAmount:FeeAmount) => {
@@ -27,7 +28,7 @@ const useUniswapV3Liquidity = (tokenAddress: `0x${string}`,feeAmount:FeeAmount) 
 
   return {
     data: {
-      isTokenPair: poolAddress.data !== NULL_ADDRESS,
+      isTokenPair: tokenBalance.data?.value.gt(MINIMUM_LIQUIDITY) && poolAddress.data !== NULL_ADDRESS,
       pairAddress: poolAddress.data,
       tokenBalance: tokenBalance.data?.value,
       wethBalance: wethBalance.data?.value,

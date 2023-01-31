@@ -1,5 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import FeeTierIcon from "@components/FeeTierIcon";
+import { parseUnits } from "ethers/lib/utils.js";
 
 
 export enum Exchanges {
@@ -28,4 +29,6 @@ export const DisplayExchange = {
 [Exchanges.UNISWAPV2]:"Uniswap V2"
 };
 
-export const FLAGGEDPOOLS = [{tokenAddress:'0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b', exchange:Exchanges.UNISWAPV3HIGH}]
+export const FLAGGEDPOOLS = [{tokenAddress:'0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b', exchange:Exchanges.UNISWAPV3HIGH}]
+
+export const MINIMUM_LIQUIDITY = parseUnits("10");
