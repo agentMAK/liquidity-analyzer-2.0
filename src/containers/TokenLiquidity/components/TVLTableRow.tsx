@@ -5,22 +5,22 @@ import { DisplayExchange, Exchanges } from "@utils/constants/exchanges";
 import { BigNumber } from "ethers";
 
 type TVLTableRowProps = {
-    exchange:Exchanges,
-    tvl:BigNumber,
-    isLoading:boolean,
-    isError:boolean,
-}
+  exchange: Exchanges;
+  tvl: BigNumber;
+  isLoading: boolean;
+  isError: boolean;
+};
 
-const TVLTableRow = ({exchange,tvl,isLoading,isError}:TVLTableRowProps): JSX.Element => {
-
+const TVLTableRow = ({
+  exchange,
+  tvl,
+  isLoading,
+  isError,
+}: TVLTableRowProps): JSX.Element => {
   return (
     <Tr>
-      <DTd
-        isLoaded={!isLoading}
-        isError={isError}
-        isTitle={true}
-      >
-          {DisplayExchange[exchange]}
+      <DTd isLoaded={!isLoading} isError={isError} isTitle={true}>
+        {DisplayExchange[exchange]}
       </DTd>
       <DTd isLoaded={!isLoading} isError={isError}>
         ${formatCurrency(tvl)}

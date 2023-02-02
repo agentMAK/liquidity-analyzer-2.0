@@ -19,7 +19,6 @@ const TokenLiquidityContainer = ({
 }: TokenLiquidityContainerProps): JSX.Element => {
   const tokenTVL: any = useTokenPairTVL(tokenAddress);
 
-
   return (
     <Box mt={"20px"} mb={"50px"} width={"100%"} display={"flex"} gap={"12px"}>
       <Box
@@ -36,8 +35,8 @@ const TokenLiquidityContainer = ({
             </Tr>
           </Thead>
           <Tbody>
-            {!tokenChosen ? (
-                Object.values(Exchanges).map((exchangeKey, index) => {
+            {!tokenChosen
+              ? Object.values(Exchanges).map((exchangeKey, index) => {
                   return (
                     <Tr key={index}>
                       <DTd>{DisplayExchange[exchangeKey]}</DTd>
@@ -45,20 +44,18 @@ const TokenLiquidityContainer = ({
                     </Tr>
                   );
                 })
-            ) : (
-              Object.values(Exchanges).map((exchange, index) => {
-                if (tokenTVL.data[exchange])
-                  return (
-                    <TVLTableRow
-                      key={index}
-                      exchange={exchange}
-                      tvl={tokenTVL.data[exchange].tvl}
-                      isLoading={tokenTVL.isLoading}
-                      isError={tokenTVL.isError}
-                    />
-                  );
-              })
-            )}
+              : Object.values(Exchanges).map((exchange, index) => {
+                  if (tokenTVL.data[exchange])
+                    return (
+                      <TVLTableRow
+                        key={index}
+                        exchange={exchange}
+                        tvl={tokenTVL.data[exchange].tvl}
+                        isLoading={tokenTVL.isLoading}
+                        isError={tokenTVL.isError}
+                      />
+                    );
+                })}
           </Tbody>
         </DataTable>
       </Box>

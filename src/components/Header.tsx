@@ -3,20 +3,26 @@ import { Image } from "@chakra-ui/react";
 
 const NavItem = (props: any): JSX.Element => {
   return (
-    <Link href={props.href} _hover={{textDecoration:"none"}}><Button
-      bgColor={"primary.50"}
-      textColor={"#EEEEEE"}
-      fontWeight={"500"}
-      fontSize={"14px"}
-      px={"16px"}
-      py={"12px"}
-      borderRadius={"50px"}
-      _hover={{bgColor:"primary.75"}}
-      _disabled={{bgColor:"primary.50",opacity:0.4,cursor:"not-allowed"}}
-      {...props}
-    >
-      {props.children}
-    </Button></Link>
+    <Link href={props.href} _hover={{ textDecoration: "none" }}>
+      <Button
+        bgColor={"primary.50"}
+        textColor={"#EEEEEE"}
+        fontWeight={"500"}
+        fontSize={"14px"}
+        px={"16px"}
+        py={"12px"}
+        borderRadius={"50px"}
+        _hover={{ bgColor: "primary.75" }}
+        _disabled={{
+          bgColor: "primary.50",
+          opacity: 0.4,
+          cursor: "not-allowed",
+        }}
+        {...props}
+      >
+        {props.children}
+      </Button>
+    </Link>
   );
 };
 

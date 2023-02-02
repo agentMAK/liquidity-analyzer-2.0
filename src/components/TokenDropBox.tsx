@@ -1,102 +1,145 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
 import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+  AutoCompleteGroup,
+} from "@choc-ui/chakra-autocomplete";
+
+import {
+  Icon,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Stack,
+  Text,
+  Image,
+  createIcon,
 } from "@chakra-ui/react";
 import { TokenList, TOKEN_LIQUIDITY_LIST } from "@utils/constants/tokens";
-import React, { useEffect, useState } from "react";
-import { Icon, createIcon } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 type TokenDropBoxProps = {
+  tokenList: TokenList;
   setToken: (token: string) => void;
-  tokenKey: string;
-  tokenList: TokenList
-  tokenChosen: boolean,
-  setTokenChosen: (tokenChosen: boolean) => void
 };
-const TokenDropBox = ({ setToken, tokenKey, tokenList, tokenChosen, setTokenChosen }: TokenDropBoxProps): JSX.Element => {
-  const TokenIcon = createIcon({
-    displayName: "TokenIcon",
-    viewBox: "0 0 20 20",
-    d: "M12.5 3.33331C8.81671 3.33331 5.83337 6.31665 5.83337 9.99998C5.83337 13.6833 8.81671 16.6666 12.5 16.6666C16.1834 16.6666 19.1667 13.6833 19.1667 9.99998C19.1667 6.31665 16.1834 3.33331 12.5 3.33331ZM12.5 15C9.74171 15 7.50004 12.7583 7.50004 9.99998C7.50004 7.24165 9.74171 4.99998 12.5 4.99998C15.2584 4.99998 17.5 7.24165 17.5 9.99998C17.5 12.7583 15.2584 15 12.5 15ZM2.50004 9.99998C2.50004 8.00831 3.66671 6.28331 5.35837 5.48331C5.64171 5.34998 5.83337 5.09165 5.83337 4.78331V4.62498C5.83337 4.05831 5.24171 3.69998 4.73337 3.94165C2.43337 4.99165 0.833374 7.30831 0.833374 9.99998C0.833374 12.6916 2.43337 15.0083 4.73337 16.0583C5.24171 16.2916 5.83337 15.9416 5.83337 15.375V15.225C5.83337 14.9166 5.64171 14.65 5.35837 14.5166C3.66671 13.7166 2.50004 11.9916 2.50004 9.99998Z",
-  });
 
-  const DropDownIcon = createIcon({
-    displayName: "DropDownIcon",
-    viewBox: "0 0 10 5",
-    d: "M0 0L5 5L10 0H0Z",
-  });
+const TokenDropBox = ({
+  tokenList,
+  setToken,
+}: TokenDropBoxProps): JSX.Element => {
+  const searchIcon = (
+    <Icon boxSize="16px" viewBox="0 0 24 24" focusable="false">
+      <path
+        fill="currentColor"
+        d="M23.384,21.619,16.855,15.09a9.284,9.284,0,1,0-1.768,1.768l6.529,6.529a1.266,1.266,0,0,0,1.768,0A1.251,1.251,0,0,0,23.384,21.619ZM2.75,9.5a6.75,6.75,0,1,1,6.75,6.75A6.758,6.758,0,0,1,2.75,9.5Z"
+      ></path>
+    </Icon>
+  );
 
-  const  [menuState, setMenuState] = useState({icon: <TokenIcon boxSize={"20px"} />, token: "Choose A Token"})
+  const [inputText, setInputText] = useState("");
+  const [menuIcon, setMenuIcon] = useState<JSX.Element>(searchIcon);
 
-  useEffect(() => {
-    const token = tokenList[tokenKey as keyof typeof tokenList]
-    tokenChosen ? setMenuState({icon: <Image src={token.imageSrc} boxSize={"20px"} alt={token.name} />, token: token.symbol}) : null
-  }, [tokenChosen, tokenKey, tokenList])
+  const setMenuIconToken = (newToken: string) => {
+    const token = tokenList[newToken as keyof typeof tokenList];
+    setMenuIcon(
+      <Image src={token.imageSrc} boxSize={"16px"} alt={token.name} />
+    );
+  };
 
   return (
-    <Menu>
-      <MenuButton
-        fontSize={"14px"}
-        height={"48px"}
-        width={"200px"}
-        bg={"black"}
-        borderRadius={"50px"}
-        as={Button}
-        rightIcon={<DropDownIcon boxSize={"10px"} mr={"10px"} />}
-        leftIcon={menuState.icon}
-        _hover={{ bg: "black" }}
-        _focus={{ bg: "black" }}
-        _active={{ bg: "black" }}
-        textAlign={"left"}
+    <Stack
+      direction="column"
+      width={"400px"}
+      height={"48px"}
+      mt={"10px"}
+      borderRadius={"50px"}
+    >
+      <AutoComplete
+        openOnFocus
+        defaultIsOpen
+        rollNavigation
+        listAllValuesOnFocus
+        onChange={(value) => {
+          setToken(value);
+          setInputText(value);
+          setMenuIconToken(value);
+        }}
       >
-       {menuState.token}
-      </MenuButton>
-      <MenuList
-        bg={"black"}
-        width={"264px"}
-        padding={"12px"}
-        borderRadius={"12px"}
-        borderColor="black"
-        onClick={() => setTokenChosen(true)}
-      >
-        <MenuGroup title="Choose a Token" mx={"0px"} mb={"9px"} mt={"0px"}>
-          {Object.values(tokenList).map((token, index) => {
-            return (
-              <MenuItem
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents="none"
+            color="inherit"
+            height={"100%"}
+            ml={"2px"}
+          >
+            {menuIcon}
+          </InputLeftElement>
+          <AutoCompleteInput
+            borderRadius={"50px"}
+            height={"48px"}
+            value={inputText}
+            onChange={(event) => setInputText(event.target.value)}
+            _focus={{ backgroundColor: "black" }}
+            onClick={() => {
+              setInputText("");
+              setMenuIcon(searchIcon);
+            }}
+            fontSize={"14px"}
+            fontWeight={"500"}
+            backgroundColor={"black"}
+            _hover={{ backgroundColor: "black" }}
+            border={"none"}
+            placeholder="Search for token..."
+          />
+          <InputRightElement
+            pointerEvents="none"
+            color="inherit"
+            height={"100%"}
+          >
+            <Icon boxSize="10px" viewBox="0 0 10 5" focusable="false">
+              <path fill="currentColor" d="M0 0L5 5L10 0H0Z"></path>
+            </Icon>
+          </InputRightElement>
+        </InputGroup>
+        <AutoCompleteList padding={"0px"} color={"black"} borderRadius={"14px"}>
+          <AutoCompleteGroup
+            backgroundColor={"black"}
+            padding={"12px"}
+            borderRadius={"12px"}
+            borderTopRightRadius={"0px"}
+          >
+            {Object.values(tokenList).map((token: any, oid: number) => (
+              <AutoCompleteItem
+                key={`option-${oid}`}
+                value={token.symbol}
+                label={token.name + " " + token.symbol}
+                textTransform="capitalize"
                 bg={"gray.800"}
                 color={"white"}
                 borderRadius={"50px"}
                 fontSize={"14px"}
                 fontWeight={"500"}
-                key={index}
                 padding={"8px 16px"}
-                mb={"9px"}
                 _last={{ mb: "0px" }}
-                onClick={() => setToken(token.symbol)}
+                mb={"9px"}
+                mx={"0px"}
+                _focus={{ bg: "gray.400" }}
                 _hover={{ bg: "gray.400" }}
               >
                 <Image
                   src={token.imageSrc}
                   alt="Index Coop Logo"
                   height={"20px"}
-                  mr={'8px'}
+                  mr={"8px"}
                 />
-                {token.name}
-              </MenuItem>
-            );
-          })}
-        </MenuGroup>
-      </MenuList>
-    </Menu>
+                {token.name} ({token.symbol})
+              </AutoCompleteItem>
+            ))}
+          </AutoCompleteGroup>
+        </AutoCompleteList>
+      </AutoComplete>
+    </Stack>
   );
 };
 

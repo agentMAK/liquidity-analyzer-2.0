@@ -6,13 +6,12 @@ import { client } from "@utils/wagmi";
 import { ChakraProvider } from "@chakra-ui/react";
 import Header from "@components/Header";
 const queryClient = new QueryClient();
-import theme from '@theme/index';
-import "@fontsource/ibm-plex-sans/400.css"
-import "@fontsource/ibm-plex-sans/500.css"
-import "@fontsource/ibm-plex-sans/600.css"
-import "@fontsource/ibm-plex-sans/700.css"
+import theme from "@theme/index";
+import "@fontsource/ibm-plex-sans/400.css";
+import "@fontsource/ibm-plex-sans/500.css";
+import "@fontsource/ibm-plex-sans/600.css";
+import "@fontsource/ibm-plex-sans/700.css";
 import Head from "@components/Head";
-
 
 function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = React.useState(false);

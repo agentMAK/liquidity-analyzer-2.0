@@ -45,7 +45,7 @@ export const DTd = (props: any): JSX.Element => {
               <Text ml="6px">{props.children}</Text>{" "}
             </Flex>
           ) : (
-            <Flex alignItems={"center"} height={'1.25rem'}>
+            <Flex alignItems={"center"} height={"1.25rem"}>
               <Box
                 bgColor={"primary.50"}
                 opacity={0.5}

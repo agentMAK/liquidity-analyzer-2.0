@@ -23,7 +23,7 @@ export const mulBigNumbers = (
 export const bigNumberToDecimal = (
   value: BigNumber = BigNumber.from(0),
   precison: number = 0
-):string => {
+): string => {
   const bigNumberValue = BigNumber.from(value);
   const remainder = bigNumberValue.mod(1e8);
   const formattedValue = parseFloat(
@@ -33,11 +33,10 @@ export const bigNumberToDecimal = (
   return formattedValue.toFixed(precison);
 };
 
-function formatNumberWithCommas(x:string) {
+function formatNumberWithCommas(x: string) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export const formatCurrency = (value:BigNumber = BigNumber.from("0")) => {
-  return formatNumberWithCommas(bigNumberToDecimal(value,2))
-}
-
+export const formatCurrency = (value: BigNumber = BigNumber.from("0")) => {
+  return formatNumberWithCommas(bigNumberToDecimal(value, 2));
+};

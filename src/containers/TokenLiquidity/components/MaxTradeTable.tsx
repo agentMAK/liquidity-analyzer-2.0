@@ -1,9 +1,4 @@
-import {
-  Box,
-  Tbody,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+import { Box, Tbody, Thead, Tr } from "@chakra-ui/react";
 import DataTable, { DTd, DTh } from "@components/DataTable";
 import SlippageMessage from "@components/SlippageMessage";
 import useAllMaxTrade from "@hooks/useAllMaxTrades";
@@ -24,7 +19,7 @@ const MaxTradeTable = ({
   tokenAddress,
   exchanges,
 }: MaxTradeTableProps): JSX.Element => {
-  const maxTrade = useAllMaxTrade(tokenAddress, 0.5,exchanges);
+  const maxTrade = useAllMaxTrade(tokenAddress, 0.5, exchanges);
   const tokenPrice = useCoinGeckoPrice(tokenAddress);
 
   return (
@@ -38,8 +33,7 @@ const MaxTradeTable = ({
         <Thead>
           <Tr>
             <DTh pb={"8px"}>
-              Max Trade Size{" "}
-              <SlippageMessage />
+              Max Trade Size <SlippageMessage />
             </DTh>
             <DTh>USD Value</DTh>
           </Tr>

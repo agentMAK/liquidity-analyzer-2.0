@@ -24,7 +24,6 @@ import {
 } from "@chakra-ui/react";
 
 const SlippageMessage = (props: any): JSX.Element => {
-
   return (
     <Flex
       color={"primary.80"}
@@ -77,7 +76,7 @@ const SlippageMessage = (props: any): JSX.Element => {
           </PopoverContent>
         </Portal>
       </Popover>
-      <WarningIcon ml='2px' boxSize={"9px"} color="primary.75" />
+      <WarningIcon ml="2px" boxSize={"9px"} color="primary.75" />
     </Flex>
   );
 };

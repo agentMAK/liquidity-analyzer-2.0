@@ -7,8 +7,8 @@ import { useState } from "react";
 
 function Index(): JSX.Element {
   const [token, setToken] = useState<string>("DPI");
-  const [tokenChosen, setTokenChosen] = useState<boolean>(false);
-  const liquidityToken = TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST]
+  const liquidityToken =
+    TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST];
 
   return (
     <Box maxWidth={["1200px"]} margin={"auto"} px={"25px"}>
@@ -23,22 +23,17 @@ function Index(): JSX.Element {
           <Heading fontSize={"32px"} fontWeight={"500"}>
             Token Liquidity
           </Heading>
-          <Box hidden={!tokenChosen}>
-            <Heading fontSize={"24px"} fontWeight={"500"} textAlign={"right"}>
-              {
-                liquidityToken.symbol
-              }
+          <Box textAlign={"right"}>
+            <Heading fontSize={"24px"} fontWeight={"500"}>
+              {liquidityToken.name}
             </Heading>
             <Link
               color={"primary.80"}
               fontSize={"12px"}
               textDecoration={"underline"}
               href={`https://etherscan.io/address/${liquidityToken.address}`}
-                      >
-              {trimAddress(
-                liquidityToken
-                  .address
-              )}
+            >
+              {trimAddress(liquidityToken.address)}
             </Link>
           </Box>
         </Flex>
@@ -48,11 +43,9 @@ function Index(): JSX.Element {
           results.
         </Text>
         <TokenDropBox
+          tokenList={TOKEN_LIQUIDITY_LIST}
           setToken={setToken}
           tokenKey={token}
-          tokenList={TOKEN_LIQUIDITY_LIST}
-          tokenChosen={tokenChosen}
-          setTokenChosen={setTokenChosen}
         />
       </Box>
       <TokenLiquidityContainer
@@ -60,7 +53,7 @@ function Index(): JSX.Element {
           TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST]
             .address as `0x${string}`
         }
-        tokenChosen={tokenChosen}
+        tokenChosen={true}
       />
     </Box>
   );
