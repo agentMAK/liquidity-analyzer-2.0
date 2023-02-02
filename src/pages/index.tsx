@@ -1,14 +1,15 @@
 import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import TokenDropBox from "@components/TokenDropBox";
 import TokenLiquidityContainer from "@containers/TokenLiquidity";
-import { TOKEN_LIQUIDITY_LIST } from "@utils/constants/tokens";
+import useAllMaxTradeNew from "@hooks/useAllMaxTrades";
+import useUniswapTokenList from "@hooks/useUniswapTokenList";
+import { DEFUALT_TOKEN, Token, TOKEN_LIQUIDITY_LIST } from "@utils/constants/tokens";
 import { trimAddress } from "@utils/formatting";
 import { useState } from "react";
 
 function Index(): JSX.Element {
-  const [token, setToken] = useState<string>("DPI");
-  const liquidityToken =
-    TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST];
+  const [token, setToken] = useState<Token>(DEFUALT_TOKEN)
+  const uniswapTokenList = useUniswapTokenList()
 
   return (
     <Box maxWidth={["1200px"]} margin={"auto"} px={"25px"}>
@@ -25,15 +26,15 @@ function Index(): JSX.Element {
           </Heading>
           <Box textAlign={"right"}>
             <Heading fontSize={"24px"} fontWeight={"500"}>
-              {liquidityToken.name}
+              {token.name}
             </Heading>
             <Link
               color={"primary.80"}
               fontSize={"12px"}
               textDecoration={"underline"}
-              href={`https://etherscan.io/address/${liquidityToken.address}`}
+              href={`https://etherscan.io/address/${token.address}`}
             >
-              {trimAddress(liquidityToken.address)}
+              {trimAddress(token.address)}
             </Link>
           </Box>
         </Flex>
@@ -43,17 +44,13 @@ function Index(): JSX.Element {
           results.
         </Text>
         <TokenDropBox
-          tokenList={TOKEN_LIQUIDITY_LIST}
+          tokenList={uniswapTokenList.isLoading ? [] : uniswapTokenList.data}
           setToken={setToken}
-          tokenKey={token}
         />
       </Box>
       <TokenLiquidityContainer
-        tokenAddress={
-          TOKEN_LIQUIDITY_LIST[token as keyof typeof TOKEN_LIQUIDITY_LIST]
-            .address as `0x${string}`
+        tokenAddress={token.address as `0x${string}`
         }
-        tokenChosen={true}
       />
     </Box>
   );

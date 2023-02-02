@@ -12,16 +12,14 @@ import {
   InputLeftElement,
   InputRightElement,
   Stack,
-  Text,
   Image,
-  createIcon,
 } from "@chakra-ui/react";
-import { TokenList, TOKEN_LIQUIDITY_LIST } from "@utils/constants/tokens";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Token, TokenList } from "@utils/constants/tokens";
 
 type TokenDropBoxProps = {
-  tokenList: TokenList;
-  setToken: (token: string) => void;
+  tokenList:TokenList;
+  setToken: (token: Token) => void;
 };
 
 const TokenDropBox = ({
@@ -40,12 +38,6 @@ const TokenDropBox = ({
   const [inputText, setInputText] = useState("");
   const [menuIcon, setMenuIcon] = useState<JSX.Element>(searchIcon);
 
-  const setMenuIconToken = (newToken: string) => {
-    const token = tokenList[newToken as keyof typeof tokenList];
-    setMenuIcon(
-      <Image src={token.imageSrc} boxSize={"16px"} alt={token.name} />
-    );
-  };
 
   return (
     <Stack
@@ -57,13 +49,15 @@ const TokenDropBox = ({
     >
       <AutoComplete
         openOnFocus
-        defaultIsOpen
         rollNavigation
         listAllValuesOnFocus
-        onChange={(value) => {
-          setToken(value);
-          setInputText(value);
-          setMenuIconToken(value);
+        onChange={(tokenValue) => {
+          const token:Token = tokenList[parseInt(tokenValue)]
+          setToken(token);
+          setInputText(token.symbol);
+          setMenuIcon(
+            <Image src={token.logoURI} boxSize={"16px"} alt={token.name} borderRadius={'20px'} />
+          );
         }}
       >
         <InputGroup>
@@ -109,10 +103,10 @@ const TokenDropBox = ({
             borderRadius={"12px"}
             borderTopRightRadius={"0px"}
           >
-            {Object.values(tokenList).map((token: any, oid: number) => (
+            {tokenList.map((token: any, oid: number) => (
               <AutoCompleteItem
                 key={`option-${oid}`}
-                value={token.symbol}
+                value={oid.toString()}
                 label={token.name + " " + token.symbol}
                 textTransform="capitalize"
                 bg={"gray.800"}
@@ -128,10 +122,11 @@ const TokenDropBox = ({
                 _hover={{ bg: "gray.400" }}
               >
                 <Image
-                  src={token.imageSrc}
+                  src={token.logoURI}
                   alt="Index Coop Logo"
                   height={"20px"}
                   mr={"8px"}
+                  borderRadius={'20px'}
                 />
                 {token.name} ({token.symbol})
               </AutoCompleteItem>

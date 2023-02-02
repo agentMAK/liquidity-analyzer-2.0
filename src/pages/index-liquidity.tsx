@@ -17,18 +17,15 @@ import IndexLiquidityContainer from "@containers/IndexLiquidity";
 import useCoinGeckoMarketData from "@hooks/CoinGecko/useCoinGeckoMarketData";
 import useCoinGeckoTotalMarketCap from "@hooks/CoinGecko/useCoinGeckoTotalMarketCap";
 import useSetComponents, { TokenSet } from "@hooks/useSetComponents";
-import { INDEX_TOKENS } from "@utils/constants/tokens";
+import { DEFUALT_TOKEN, INDEX_TOKENS, Token } from "@utils/constants/tokens";
 import { ethers } from "ethers";
 import { useState } from "react";
 
 function IndexLiquidity(): JSX.Element {
-  const [token, setToken] = useState<string>("DPI");
-  const [tokenChosen, setTokenChosen] = useState<boolean>(true);
-  const indexToken = INDEX_TOKENS[token as keyof typeof INDEX_TOKENS];
+  const [token, setToken] = useState<Token>(DEFUALT_TOKEN)
 
-  const coinGeckoMarketData = useCoinGeckoMarketData([indexToken.coinGeckoId]);
-
-  const tokenComponents = useSetComponents(indexToken.tokenSetId as TokenSet);
+  const coinGeckoMarketData = useCoinGeckoMarketData([token?.coinGeckoId as string]);
+  const tokenComponents = useSetComponents(token.tokenSetId as TokenSet);
 
   const totalMarketCap = useCoinGeckoTotalMarketCap();
 
@@ -68,7 +65,6 @@ function IndexLiquidity(): JSX.Element {
           <Flex justifyContent={"space-between"} alignItems={"center"}>
             <TokenDropBox
               setToken={setToken}
-              tokenKey={token}
               tokenList={INDEX_TOKENS}
             />
             <Box>
@@ -94,9 +90,7 @@ function IndexLiquidity(): JSX.Element {
           <Text fontWeight={"500"} fontSize={"24px"}>
             Total Market Cap: <br />$
             <Skeleton as="span" isLoaded={!totalMarketCap.isLoading}>
-              {!tokenChosen
-                ? ""
-                : totalMarketCap.isLoading
+              {totalMarketCap.isLoading
                 ? "loading"
                 : ethers.utils.commify(totalMarketCap.data)}
             </Skeleton>
@@ -107,12 +101,10 @@ function IndexLiquidity(): JSX.Element {
             </Text>
             {" $"}
             <Skeleton as="span" isLoaded={!coinGeckoMarketData.isLoading}>
-              {!tokenChosen
-                ? ""
-                : coinGeckoMarketData.isLoading
+              {coinGeckoMarketData.isLoading
                 ? "loading"
                 : ethers.utils.commify(
-                    coinGeckoMarketData.data[token].market_cap
+                    coinGeckoMarketData.data[token.symbol].market_cap
                   )}
             </Skeleton>
             <Text as="span" fontWeight={"500"}>
@@ -121,9 +113,7 @@ function IndexLiquidity(): JSX.Element {
             </Text>
             {" $"}
             <Skeleton as="span" isLoaded={!tokenComponents.isLoading}>
-              {!tokenChosen
-                ? ""
-                : tokenComponents.isLoading
+              {tokenComponents.isLoading
                 ? "loading"
                 : ethers.utils.commify(
                     calculateNetAssetValue(tokenComponents.data).toFixed(2)
@@ -134,7 +124,6 @@ function IndexLiquidity(): JSX.Element {
       </Flex>
       <IndexLiquidityContainer
         tokenComponents={tokenComponents}
-        tokenChosen={tokenChosen}
       />
     </Box>
   );

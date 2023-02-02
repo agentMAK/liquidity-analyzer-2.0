@@ -1,58 +1,24 @@
-import { Exchanges } from "@utils/constants/exchanges";
-import useMaxTrade from "./useMaxTrade";
+import { Exchanges} from "@utils/constants/exchanges";
+import { useProvider } from "wagmi";
+import { useQueries } from "react-query";
+import fetchMaxTrade from "@utils/constants/maxTrade";
 
-const useAllMaxTrade = (
-  tokenAddress: string,
-  maxSlippage: number,
-  exchanges: string[] = Object.values(Exchanges)
-) => {
-  const fetchMaxTrade = {
-    [Exchanges.UNISWAPV3LOW]: useMaxTrade(
-      tokenAddress,
-      Exchanges.UNISWAPV3LOW,
-      maxSlippage,
-      !exchanges.includes(Exchanges.UNISWAPV3LOW)
-    ),
-    [Exchanges.UNISWAPV3MEDIUM]: useMaxTrade(
-      tokenAddress,
-      Exchanges.UNISWAPV3MEDIUM,
-      maxSlippage,
-      !exchanges.includes(Exchanges.UNISWAPV3MEDIUM)
-    ),
-    [Exchanges.UNISWAPV3HIGH]: useMaxTrade(
-      tokenAddress,
-      Exchanges.UNISWAPV3HIGH,
-      maxSlippage,
-      !exchanges.includes(Exchanges.UNISWAPV3HIGH)
-    ),
-    [Exchanges.UNISWAPV2]: useMaxTrade(
-      tokenAddress,
-      Exchanges.UNISWAPV2,
-      maxSlippage,
-      !exchanges.includes(Exchanges.UNISWAPV2)
-    ),
-    [Exchanges.SUSHIWAP]: useMaxTrade(
-      tokenAddress,
-      Exchanges.SUSHIWAP,
-      maxSlippage,
-      !exchanges.includes(Exchanges.SUSHIWAP)
-    ),
-  };
+const useAllMaxTrade = (tokenAddress: string, maxSlippage: number, exchanges:Exchanges[] = Object.values(Exchanges)) => {
+  let provider = useProvider();
 
-  let AllMaxTrade: any = {};
-  Object.values(Exchanges).map((exchange) => {
-    AllMaxTrade[exchange] = fetchMaxTrade[exchange].data;
-  });
 
-  return {
-    data: AllMaxTrade,
-    isError: !Object.values(fetchMaxTrade).every(
-      (exchange: any) => !exchange.isError
-    ),
-    isLoading: !Object.values(fetchMaxTrade).every(
-      (exchange: any) => !exchange.isLoading
-    ),
-  };
+  const allMaxTrades = useQueries(
+    Object.values(exchanges).map((exchange) => {
+      return {
+        queryKey: ["fetchMaxTrade", tokenAddress, exchange, maxSlippage],
+        queryFn: () =>
+          fetchMaxTrade(tokenAddress, exchange, maxSlippage, provider),
+      };
+    })
+  );
+
+  return allMaxTrades;
+
 };
 
 export default useAllMaxTrade;

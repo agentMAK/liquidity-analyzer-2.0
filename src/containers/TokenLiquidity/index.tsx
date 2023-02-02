@@ -10,14 +10,13 @@ import TVLTableRow from "./components/TVLTableRow";
 
 type TokenLiquidityContainerProps = {
   tokenAddress: `0x${string}`;
-  tokenChosen: boolean;
 };
 
 const TokenLiquidityContainer = ({
   tokenAddress,
-  tokenChosen,
 }: TokenLiquidityContainerProps): JSX.Element => {
   const tokenTVL: any = useTokenPairTVL(tokenAddress);
+
 
   return (
     <Box mt={"20px"} mb={"50px"} width={"100%"} display={"flex"} gap={"12px"}>
@@ -35,16 +34,7 @@ const TokenLiquidityContainer = ({
             </Tr>
           </Thead>
           <Tbody>
-            {!tokenChosen
-              ? Object.values(Exchanges).map((exchangeKey, index) => {
-                  return (
-                    <Tr key={index}>
-                      <DTd>{DisplayExchange[exchangeKey]}</DTd>
-                      <DTd />
-                    </Tr>
-                  );
-                })
-              : Object.values(Exchanges).map((exchange, index) => {
+              {Object.values(Exchanges).map((exchange, index) => {
                   if (tokenTVL.data[exchange])
                     return (
                       <TVLTableRow
@@ -59,14 +49,12 @@ const TokenLiquidityContainer = ({
           </Tbody>
         </DataTable>
       </Box>
-      {!tokenChosen ? (
-        <MaxTradeTableBlank />
-      ) : tokenTVL.isLoading ? (
+      {tokenTVL.isLoading ? (
         <MaxTradeTableBlank isLoading={true} />
       ) : (
         <MaxTradeTable
           tokenAddress={tokenAddress}
-          exchanges={Object.keys(tokenTVL.data)}
+          exchanges={Object.keys(tokenTVL.data).map(exchangeValue => exchangeValue as Exchanges)}
         />
       )}
     </Box>
