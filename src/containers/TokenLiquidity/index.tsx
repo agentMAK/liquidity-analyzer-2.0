@@ -1,21 +1,24 @@
 import { Box, Skeleton, Td } from "@chakra-ui/react";
 import { Thead, Tbody, Tr } from "@chakra-ui/react";
 import DataTable, { DTd, DTh } from "@components/DataTable";
-import useSushiswapLiquidity from "@hooks/Liquidity/useSushiswapLiquidity";
 import useTokenPairTVL from "@hooks/useTokenPairTVL";
-import { DisplayExchange, Exchanges } from "@utils/constants/exchanges";
+import { Exchanges } from "@utils/constants/exchanges";
+import { Token } from "@utils/constants/tokens";
 import MaxTradeTable from "./components/MaxTradeTable";
 import MaxTradeTableBlank from "./components/MaxTradeTableBlank";
 import TVLTableRow from "./components/TVLTableRow";
 
 type TokenLiquidityContainerProps = {
-  tokenAddress: `0x${string}`;
+  token:Token;
+  slippage:number;
 };
 
 const TokenLiquidityContainer = ({
-  tokenAddress,
+  token,
+  slippage
 }: TokenLiquidityContainerProps): JSX.Element => {
-  const tokenTVL: any = useTokenPairTVL(tokenAddress);
+  
+  const tokenTVL: any = useTokenPairTVL(token);
 
 
   return (
@@ -53,8 +56,9 @@ const TokenLiquidityContainer = ({
         <MaxTradeTableBlank isLoading={true} />
       ) : (
         <MaxTradeTable
-          tokenAddress={tokenAddress}
+          tokenAddress={token.address as `0x${string}`}
           exchanges={Object.keys(tokenTVL.data).map(exchangeValue => exchangeValue as Exchanges)}
+          slippage={slippage}
         />
       )}
     </Box>

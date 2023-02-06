@@ -1,32 +1,32 @@
 import { FeeAmount } from "@uniswap/v3-sdk";
 import { mulBigNumbers } from "@utils/bigNumbers";
 import { Exchanges } from "@utils/constants/exchanges";
-import { WETH } from "@utils/constants/tokens";
+import { Token, WETH } from "@utils/constants/tokens";
 import { BigNumber } from "ethers";
 import useUniswapV2Liquidity from "./Liquidity/useUniswapV2Liquidity";
 import useUniswapV3Liquidity from "./Liquidity/useUniswapV3Liquidity";
 import useCoinGeckoPrice from "./CoinGecko/useCoinGeckoPrice";
 import useSushiswapLiquidity from "./Liquidity/useSushiswapLiquidity";
 
-const useTokenPairTVL = (tokenAddress: `0x${string}`) => {
-  const coinGeckoTokenPrice = useCoinGeckoPrice(tokenAddress);
+const useTokenPairTVL = (token:Token) => {
+  const coinGeckoTokenPrice = useCoinGeckoPrice(token.address);
   const coinGeckoEthPrice = useCoinGeckoPrice(WETH);
 
   const fetchLiquidity: any = {
     [Exchanges.UNISWAPV3LOW]: useUniswapV3Liquidity(
-      tokenAddress,
+      token,
       FeeAmount.LOW
     ),
     [Exchanges.UNISWAPV3MEDIUM]: useUniswapV3Liquidity(
-      tokenAddress,
+      token,
       FeeAmount.MEDIUM
     ),
     [Exchanges.UNISWAPV3HIGH]: useUniswapV3Liquidity(
-      tokenAddress,
+      token,
       FeeAmount.HIGH
     ),
-    [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(tokenAddress),
-    [Exchanges.SUSHIWAP]: useSushiswapLiquidity(tokenAddress),
+    [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(token),
+    [Exchanges.SUSHIWAP]: useSushiswapLiquidity(token),
   };
 
   const calculateTVL = (tokenBalance: BigNumber, wethBalance: BigNumber) => {

@@ -9,13 +9,15 @@ import { Exchanges } from "@utils/constants/exchanges";
 type MaxTradeTableProps = {
   tokenAddress: `0x${string}`;
   exchanges: Exchanges[];
+  slippage: number;
 };
 
 const MaxTradeTable = ({
   tokenAddress,
   exchanges,
+  slippage,
 }: MaxTradeTableProps): JSX.Element => {
-  const maxTrade = useAllMaxTrade(tokenAddress, 0.5,exchanges);
+  const maxTrade = useAllMaxTrade(tokenAddress, slippage,exchanges);
   const tokenPrice = useCoinGeckoPrice(tokenAddress);
 
   return (
@@ -28,8 +30,8 @@ const MaxTradeTable = ({
       <DataTable>
         <Thead>
           <Tr>
-            <DTh pb={"8px"}>
-              Max Trade Size <SlippageMessage />
+            <DTh>
+              Max Trade Size
             </DTh>
             <DTh>USD Value</DTh>
           </Tr>

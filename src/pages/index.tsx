@@ -1,15 +1,32 @@
-import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Link,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Text,
+} from "@chakra-ui/react";
+import SlippageMessage from "@components/SlippageMessage";
 import TokenDropBox from "@components/TokenDropBox";
 import TokenLiquidityContainer from "@containers/TokenLiquidity";
 import useAllMaxTradeNew from "@hooks/useAllMaxTrades";
 import useUniswapTokenList from "@hooks/useUniswapTokenList";
-import { DEFUALT_TOKEN, Token, TOKEN_LIQUIDITY_LIST } from "@utils/constants/tokens";
+import {
+  DEFUALT_TOKEN,
+  Token,
+  TOKEN_LIQUIDITY_LIST,
+} from "@utils/constants/tokens";
 import { trimAddress } from "@utils/formatting";
 import { useState } from "react";
 
 function Index(): JSX.Element {
-  const [token, setToken] = useState<Token>(DEFUALT_TOKEN)
-  const uniswapTokenList = useUniswapTokenList()
+  const [token, setToken] = useState<Token>(DEFUALT_TOKEN);
+  const uniswapTokenList = useUniswapTokenList();
+  const [value, setValue] = useState("0.5");
 
   return (
     <Box maxWidth={["1200px"]} margin={"auto"} px={"25px"}>
@@ -43,15 +60,34 @@ function Index(): JSX.Element {
           on popular DeXs. This dashboard uses live on chain data to produce
           results.
         </Text>
-        <TokenDropBox
-          tokenList={uniswapTokenList.isLoading ? [] : uniswapTokenList.data}
-          setToken={setToken}
-        />
+        <Flex justifyContent={"space-between"} alignItems={"center"}>
+          <TokenDropBox
+            tokenList={uniswapTokenList.isLoading ? [] : uniswapTokenList.data}
+            setToken={setToken}
+          />
+          <Box>
+            <SlippageMessage />
+            <NumberInput
+              size="lg"
+              maxW={32}
+              defaultValue={0.5}
+              step={0.5}
+              onChange={(valueString) => setValue(valueString.replace("%",''))}
+              value={value+"%"}
+              min={0.5}
+              max={20}
+              precision={1}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper color={"white"} />
+                <NumberDecrementStepper color={"white"} />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+        </Flex>
       </Box>
-      <TokenLiquidityContainer
-        tokenAddress={token.address as `0x${string}`
-        }
-      />
+      <TokenLiquidityContainer token={token} slippage={parseFloat(value)} />
     </Box>
   );
 }

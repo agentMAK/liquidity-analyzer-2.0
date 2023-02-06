@@ -1,23 +1,25 @@
 import { useBalance, useContractRead } from "wagmi";
-import { NULL_ADDRESS, WETH } from "@constants/tokens";
+import { NULL_ADDRESS, Token, WETH } from "@constants/tokens";
 import V2_FACTORY_ABI from "@uniswap/v2-core/build/UniswapV2Factory.json";
-import { FACTORY_ADDRESS as V2_FACTORY_ADDRESS } from "@uniswap/v2-sdk";
+
 import {
   MINIMUM_LIQUIDITY,
   SUSHI_FACTORY_ADDRESS,
 } from "@utils/constants/exchanges";
+import { formatUnits, parseUnits } from "ethers/lib/utils.js";
+import { BigNumber } from "ethers";
 
-const useSushiswapLiquidity = (tokenAddress: `0x${string}`) => {
+const useSushiswapLiquidity = (token:Token) => {
   const poolAddress = useContractRead({
     address: SUSHI_FACTORY_ADDRESS,
     abi: V2_FACTORY_ABI.abi,
     functionName: "getPair",
-    args: [tokenAddress, WETH],
+    args: [token.address, WETH],
   });
 
   const tokenBalance = useBalance({
     address: poolAddress.data as `0x${string}`,
-    token: tokenAddress,
+    token: token.address as `0x${string}`,
     enabled: poolAddress.isFetched,
   });
 
@@ -27,13 +29,18 @@ const useSushiswapLiquidity = (tokenAddress: `0x${string}`) => {
     enabled: poolAddress.isFetched,
   });
 
+  const formattedTokenBalance =
+  token.decimals === 18
+    ? tokenBalance.data?.value
+    : parseUnits(formatUnits(tokenBalance.data?.value || BigNumber.from(0),token.decimals));
+
   return {
     data: {
       isTokenPair:
-        tokenBalance.data?.value.gt(MINIMUM_LIQUIDITY) &&
+      (formattedTokenBalance || BigNumber.from(0)).gt(MINIMUM_LIQUIDITY) &&
         poolAddress.data !== NULL_ADDRESS,
       pairAddress: poolAddress.data,
-      tokenBalance: tokenBalance.data?.value,
+      tokenBalance: formattedTokenBalance,
       wethBalance: wethBalance.data?.value,
     },
     isError: tokenBalance.isError || wethBalance.isError,

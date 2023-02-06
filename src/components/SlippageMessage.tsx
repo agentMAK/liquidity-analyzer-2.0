@@ -26,12 +26,12 @@ import {
 const SlippageMessage = (props: any): JSX.Element => {
   return (
     <Flex
-      color={"primary.80"}
+      color={"white"}
       textTransform={"none"}
-      mt={"4px"}
+      mb={"4px"}
       fontSize={"12px"}
     >
-      <Popover placement="bottom-start">
+      <Popover placement="bottom-end">
         <PopoverTrigger>
           <Button
             bg={"none"}
@@ -40,13 +40,13 @@ const SlippageMessage = (props: any): JSX.Element => {
             fontSize={"12px"}
             _hover={{ bg: "none", textDecoration: "underline" }}
           >
-            0.5% Slippage
+            Slippage Tolerance
           </Button>
         </PopoverTrigger>
         <Portal>
           <PopoverContent
             bgColor={"primary.75"}
-            borderColor={"primary.75"}
+            borderColor={"white"}
             width={"400px"}
           >
             <PopoverArrow bgColor={"primary.75"} />
@@ -76,7 +76,7 @@ const SlippageMessage = (props: any): JSX.Element => {
           </PopoverContent>
         </Portal>
       </Popover>
-      <WarningIcon ml="2px" boxSize={"9px"} color="primary.75" />
+      <WarningIcon ml="2px" boxSize={"9px"} color="white" />
     </Flex>
   );
 };
