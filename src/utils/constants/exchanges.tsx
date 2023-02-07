@@ -8,6 +8,7 @@ export enum Exchanges {
   UNISWAPV3HIGH = "Uniswap V3 (1%)",
   UNISWAPV2 = "Uniswap V2",
   SUSHIWAP = "Sushiswap",
+  KYBERCLASSIC = 'Kyber',
 }
 
 export const DisplayExchange = {
@@ -31,6 +32,12 @@ export const DisplayExchange = {
   ),
   [Exchanges.UNISWAPV2]: "Uniswap V2",
   [Exchanges.SUSHIWAP]: "Sushiswap",
+  [Exchanges.KYBERCLASSIC]: (
+    <Flex alignItems={"center"}>
+      Kyber
+      <FeeTierIcon>Classic</FeeTierIcon>
+    </Flex>
+  ),
 };
 
 export const FLAGGEDPOOLS = [
@@ -41,6 +48,3 @@ export const FLAGGEDPOOLS = [
 ];
 
 export const MINIMUM_LIQUIDITY = parseUnits("10");
-
-export const SUSHI_FACTORY_ADDRESS =
-  "0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac";

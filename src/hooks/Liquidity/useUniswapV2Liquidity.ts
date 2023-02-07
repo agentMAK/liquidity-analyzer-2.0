@@ -5,6 +5,7 @@ import { FACTORY_ADDRESS as V2_FACTORY_ADDRESS } from "@uniswap/v2-sdk";
 import { MINIMUM_LIQUIDITY } from "@utils/constants/exchanges";
 import { formatUnits, parseUnits } from "ethers/lib/utils.js";
 import { BigNumber } from "ethers";
+import { formatToken } from "@utils/formatting";
 
 const useUniswapV2Liquidity = (token: Token) => {
   const poolAddress = useContractRead({
@@ -25,16 +26,7 @@ const useUniswapV2Liquidity = (token: Token) => {
     token: WETH,
     enabled: poolAddress.isFetched,
   });
-
-  const formattedTokenBalance =
-    token.decimals === 18
-      ? tokenBalance.data?.value
-      : parseUnits(
-          formatUnits(
-            tokenBalance.data?.value || BigNumber.from(0),
-            token.decimals
-          )
-        );
+  const formattedTokenBalance = formatToken(tokenBalance.data?.value, token.decimals)
 
   return {
     data: {

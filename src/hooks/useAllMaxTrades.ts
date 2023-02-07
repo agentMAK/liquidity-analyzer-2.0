@@ -1,18 +1,20 @@
 import { Exchanges} from "@utils/constants/exchanges";
 import { useProvider } from "wagmi";
 import { useQueries } from "react-query";
-import fetchMaxTrade from "@utils/constants/maxTrade";
+import fetchMaxTrade from "@utils/maxTrade";
+import { Token } from "@utils/constants/tokens";
+import { formatToken } from "@utils/formatting";
 
-const useAllMaxTrade = (tokenAddress: string, maxSlippage: number, exchanges:Exchanges[] = Object.values(Exchanges)) => {
+const useAllMaxTrade = (token:Token, maxSlippage: number, exchanges:Exchanges[] = Object.values(Exchanges)) => {
   let provider = useProvider();
 
 
   const allMaxTrades = useQueries(
     Object.values(exchanges).map((exchange) => {
       return {
-        queryKey: ["fetchMaxTrade", tokenAddress, exchange, maxSlippage],
-        queryFn: () =>
-          fetchMaxTrade(tokenAddress, exchange, maxSlippage, provider),
+        queryKey: ["fetchMaxTrade", token.address, exchange, maxSlippage],
+        queryFn: async () =>
+          formatToken(await fetchMaxTrade(token.address, exchange, maxSlippage, provider),token.decimals)
       };
     })
   );

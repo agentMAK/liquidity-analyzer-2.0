@@ -5,20 +5,21 @@ import useCoinGeckoPrice from "@hooks/CoinGecko/useCoinGeckoPrice";
 import useAllMaxTrade from "@hooks/useAllMaxTrades";
 import { bigNumberToDecimal, formatCurrency, mulBigNumbers } from "@utils/bigNumbers";
 import { Exchanges } from "@utils/constants/exchanges";
+import { Token } from "@utils/constants/tokens";
 
 type MaxTradeTableProps = {
-  tokenAddress: `0x${string}`;
+  token:Token;
   exchanges: Exchanges[];
   slippage: number;
 };
 
 const MaxTradeTable = ({
-  tokenAddress,
+  token,
   exchanges,
   slippage,
 }: MaxTradeTableProps): JSX.Element => {
-  const maxTrade = useAllMaxTrade(tokenAddress, slippage,exchanges);
-  const tokenPrice = useCoinGeckoPrice(tokenAddress);
+  const maxTrade = useAllMaxTrade(token, slippage,exchanges);
+  const tokenPrice = useCoinGeckoPrice(token.address);
 
   return (
     <Box

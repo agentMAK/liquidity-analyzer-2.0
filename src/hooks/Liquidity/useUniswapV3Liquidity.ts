@@ -8,6 +8,7 @@ import V3_FACTORY_ABI from "@uniswap/v3-core/artifacts/contracts/UniswapV3Factor
 import { MINIMUM_LIQUIDITY } from "@utils/constants/exchanges";
 import { BigNumber } from "ethers";
 import { formatUnits, parseUnits } from "ethers/lib/utils.js";
+import { formatToken } from "@utils/formatting";
 
 const useUniswapV3Liquidity = (
   token:Token,
@@ -32,18 +33,10 @@ const useUniswapV3Liquidity = (
     enabled: poolAddress.isFetched,
   });
   
-  const formattedTokenBalance =
-    token.decimals === 18
-      ? tokenBalance.data?.value
-      : parseUnits(
-          formatUnits(
-            tokenBalance.data?.value || BigNumber.from(0),
-            token.decimals
-          )
-        );
+  const formattedTokenBalance = formatToken(tokenBalance.data?.value, token.decimals)
 
 
-  return {
+  return { 
     data: {
       isTokenPair:
       (formattedTokenBalance || BigNumber.from(0)).gt(MINIMUM_LIQUIDITY) &&

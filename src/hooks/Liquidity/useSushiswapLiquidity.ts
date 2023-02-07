@@ -1,13 +1,13 @@
 import { useBalance, useContractRead } from "wagmi";
 import { NULL_ADDRESS, Token, WETH } from "@constants/tokens";
 import V2_FACTORY_ABI from "@uniswap/v2-core/build/UniswapV2Factory.json";
-
 import {
   MINIMUM_LIQUIDITY,
-  SUSHI_FACTORY_ADDRESS,
 } from "@utils/constants/exchanges";
 import { formatUnits, parseUnits } from "ethers/lib/utils.js";
 import { BigNumber } from "ethers";
+import { SUSHI_FACTORY_ADDRESS } from "@utils/contracts/addresses";
+import { formatToken } from "@utils/formatting";
 
 const useSushiswapLiquidity = (token:Token) => {
   const poolAddress = useContractRead({
@@ -29,10 +29,7 @@ const useSushiswapLiquidity = (token:Token) => {
     enabled: poolAddress.isFetched,
   });
 
-  const formattedTokenBalance =
-  token.decimals === 18
-    ? tokenBalance.data?.value
-    : parseUnits(formatUnits(tokenBalance.data?.value || BigNumber.from(0),token.decimals));
+  const formattedTokenBalance = formatToken(tokenBalance.data?.value, token.decimals)
 
   return {
     data: {

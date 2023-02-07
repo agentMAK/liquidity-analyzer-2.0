@@ -81,7 +81,16 @@ const fetchMaxTrade = async (
         ether(maxSlippage)
       );
       break;
+    case Exchanges.KYBERCLASSIC:
+        data = await getKyberDMMQuote(
+          provider,
+          tokenAddress,
+          ether(maxSlippage)
+        );
+        break;
   }
+  console.log(exchange)
+  console.log(data)
   return BigNumber.from(data?.size || "0");
 };
 

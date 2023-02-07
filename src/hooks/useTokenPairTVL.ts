@@ -7,6 +7,8 @@ import useUniswapV2Liquidity from "./Liquidity/useUniswapV2Liquidity";
 import useUniswapV3Liquidity from "./Liquidity/useUniswapV3Liquidity";
 import useCoinGeckoPrice from "./CoinGecko/useCoinGeckoPrice";
 import useSushiswapLiquidity from "./Liquidity/useSushiswapLiquidity";
+import useKyberLiquidity from "./Liquidity/useKyberLiquidity";
+import useKyberClassicLiquidity from "./Liquidity/useKyberClassicLiquidity";
 
 const useTokenPairTVL = (token:Token) => {
   const coinGeckoTokenPrice = useCoinGeckoPrice(token.address);
@@ -27,6 +29,7 @@ const useTokenPairTVL = (token:Token) => {
     ),
     [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(token),
     [Exchanges.SUSHIWAP]: useSushiswapLiquidity(token),
+    [Exchanges.KYBERCLASSIC]: useKyberClassicLiquidity(token),
   };
 
   const calculateTVL = (tokenBalance: BigNumber, wethBalance: BigNumber) => {

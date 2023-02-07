@@ -17,7 +17,7 @@ const TokenLiquidityContainer = ({
   token,
   slippage
 }: TokenLiquidityContainerProps): JSX.Element => {
-  
+
   const tokenTVL: any = useTokenPairTVL(token);
 
 
@@ -56,7 +56,7 @@ const TokenLiquidityContainer = ({
         <MaxTradeTableBlank isLoading={true} />
       ) : (
         <MaxTradeTable
-          tokenAddress={token.address as `0x${string}`}
+          token={token}
           exchanges={Object.keys(tokenTVL.data).map(exchangeValue => exchangeValue as Exchanges)}
           slippage={slippage}
         />

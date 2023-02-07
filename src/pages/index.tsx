@@ -13,12 +13,13 @@ import {
 import SlippageMessage from "@components/SlippageMessage";
 import TokenDropBox from "@components/TokenDropBox";
 import TokenLiquidityContainer from "@containers/TokenLiquidity";
+import useKyberClassicLiquidity from "@hooks/Liquidity/useKyberClassicLiquidity";
+import useKyberLiquidity from "@hooks/Liquidity/useKyberLiquidity";
 import useAllMaxTradeNew from "@hooks/useAllMaxTrades";
 import useUniswapTokenList from "@hooks/useUniswapTokenList";
 import {
   DEFUALT_TOKEN,
   Token,
-  TOKEN_LIQUIDITY_LIST,
 } from "@utils/constants/tokens";
 import { trimAddress } from "@utils/formatting";
 import { useState } from "react";
@@ -74,7 +75,7 @@ function Index(): JSX.Element {
               step={0.5}
               onChange={(valueString) => setValue(valueString.replace("%",''))}
               value={value+"%"}
-              min={0.5}
+              min={0.1}
               max={20}
               precision={1}
             >
