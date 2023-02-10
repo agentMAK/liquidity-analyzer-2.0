@@ -10,10 +10,12 @@ import {
   NumberInputField,
   NumberInputStepper,
   Skeleton,
+  Switch,
   Text,
 } from "@chakra-ui/react";
 import TokenDropBox from "@components/TokenDropBox";
 import IndexLiquidityContainer from "@containers/IndexLiquidity";
+import RebalanceContainer from "@containers/IndexLiquidity/RebalanceView";
 import useCoinGeckoMarketData from "@hooks/CoinGecko/useCoinGeckoMarketData";
 import useCoinGeckoTotalMarketCap from "@hooks/CoinGecko/useCoinGeckoTotalMarketCap";
 import useSetComponents, { TokenSet } from "@hooks/useSetComponents";
@@ -22,12 +24,14 @@ import { ethers } from "ethers";
 import { useState } from "react";
 
 function IndexLiquidity(): JSX.Element {
-  const [token, setToken] = useState<Token>(DEFUALT_TOKEN)
+  const [token, setToken] = useState<Token>(DEFUALT_TOKEN);
 
-  const coinGeckoMarketData = useCoinGeckoMarketData([token?.coinGeckoId as string]);
+  const coinGeckoMarketData = useCoinGeckoMarketData([
+    token?.coinGeckoId as string,
+  ]);
   const tokenComponents = useSetComponents(token.tokenSetId as TokenSet);
-
   const totalMarketCap = useCoinGeckoTotalMarketCap();
+  const [rebalanceView, setRebalanceView] = useState<boolean>(false);
 
   const calculateNetAssetValue = (tokens: any) => {
     let total = 0;
@@ -51,10 +55,24 @@ function IndexLiquidity(): JSX.Element {
             <Heading fontSize={"32px"} fontWeight={"500"}>
               Index Liquidity
             </Heading>
-            <Box>
-              <Checkbox fontWeight={"500"} fontSize={"12px"} disabled>
-                SIMULATE REBALANCE
-              </Checkbox>
+            <Box textAlign={"right"}>
+              <Heading fontSize={"24px"} fontWeight={"500"}>
+                {token.name}
+              </Heading>
+              <Flex
+                alignItems={"center"}
+                mt={"10px"}
+                justifyContent={"flex-end"}
+              >
+                <Text fontSize={"14px"} fontWeight={"500"} mr={"5px"}>
+                  Simulate Rebalance
+                </Text>
+                <Switch
+                  size="md"
+                  isChecked={rebalanceView}
+                  onChange={(e) => setRebalanceView(e.target.checked)}
+                />
+              </Flex>
             </Box>
           </Flex>
           <Text fontSize={"14px"} maxWidth={"400px"} mt="10px" mb={"29px"}>
@@ -63,10 +81,7 @@ function IndexLiquidity(): JSX.Element {
             simulate an rebalance.
           </Text>
           <Flex justifyContent={"space-between"} alignItems={"center"}>
-            <TokenDropBox
-              setToken={setToken}
-              tokenList={INDEX_TOKENS}
-            />
+            <TokenDropBox setToken={setToken} tokenList={INDEX_TOKENS} />
             <Box>
               <Text fontSize={"12px"} fontWeight={"500"}>
                 Gas Cost (Gwei)
@@ -90,9 +105,7 @@ function IndexLiquidity(): JSX.Element {
           <Text fontWeight={"500"} fontSize={"24px"}>
             Total Market Cap: <br />$
             <Skeleton as="span" isLoaded={!totalMarketCap.isLoading}>
-              {totalMarketCap.isLoading
-                ? "loading"
-                : ethers.utils.commify(totalMarketCap.data)}
+              {ethers.utils.commify(totalMarketCap.isLoading  && coinGeckoMarketData.isError ? "0" : totalMarketCap.data)}
             </Skeleton>
           </Text>
           <Text mt={"33px"} fontSize={"14px"}>
@@ -101,11 +114,11 @@ function IndexLiquidity(): JSX.Element {
             </Text>
             {" $"}
             <Skeleton as="span" isLoaded={!coinGeckoMarketData.isLoading}>
-              {coinGeckoMarketData.isLoading
-                ? "loading"
-                : ethers.utils.commify(
-                    coinGeckoMarketData.data[token.symbol].market_cap
-                  )}
+              {ethers.utils.commify(
+                coinGeckoMarketData.isFetched && !coinGeckoMarketData.isError
+                  ? coinGeckoMarketData.data[token.symbol].market_cap
+                  : "0"
+              )}
             </Skeleton>
             <Text as="span" fontWeight={"500"}>
               <br />
@@ -113,18 +126,36 @@ function IndexLiquidity(): JSX.Element {
             </Text>
             {" $"}
             <Skeleton as="span" isLoaded={!tokenComponents.isLoading}>
-              {tokenComponents.isLoading
-                ? "loading"
-                : ethers.utils.commify(
-                    calculateNetAssetValue(tokenComponents.data).toFixed(2)
-                  )}
+              {ethers.utils.commify(
+                tokenComponents.isFetched && !coinGeckoMarketData.isError
+                  ? calculateNetAssetValue(tokenComponents.data).toFixed(2)
+                  : "0"
+              )}
             </Skeleton>
           </Text>
         </Box>
       </Flex>
-      <IndexLiquidityContainer
-        tokenComponents={tokenComponents}
-      />
+      {rebalanceView ? (
+        <RebalanceContainer
+          isLoading={tokenComponents.isLoading || coinGeckoMarketData.isLoading}
+          tokenComponents={tokenComponents.data}
+          indexMarketCap={
+            (!coinGeckoMarketData.isLoading && !coinGeckoMarketData.isError) &&
+            coinGeckoMarketData.data[token.symbol].market_cap
+          }
+          isError={tokenComponents.isError || coinGeckoMarketData.isError}
+        />
+      ) : (
+        <IndexLiquidityContainer
+          isLoading={tokenComponents.isLoading || coinGeckoMarketData.isLoading}
+          tokenComponents={tokenComponents.data}
+          indexMarketCap={
+            (!coinGeckoMarketData.isLoading && !coinGeckoMarketData.isError) &&
+            coinGeckoMarketData.data[token.symbol].market_cap
+          }
+          isError={tokenComponents.isError || coinGeckoMarketData.isError}
+        />
+      )}
     </Box>
   );
 }

@@ -14,6 +14,7 @@ import {
   // @ts-ignore
 } from "@indexcoop/index-rebalance-utils/dist/index-rebalances/utils/paramDetermination";
 import { FeeAmount } from "@uniswap/v3-sdk";
+import { getAddress } from "ethers/lib/utils.js";
 
 const checkPool = (tokenAddress: string, exchange: Exchanges) => {
   const pool = FLAGGEDPOOLS.find(
@@ -46,7 +47,7 @@ const fetchMaxTrade = async (
     case Exchanges.UNISWAPV3LOW:
       data = await getUniswapV3Quote(
         provider,
-        tokenAddress,
+        getAddress(tokenAddress),
         ether(maxSlippage),
         FeeAmount.LOW
       );
@@ -54,7 +55,7 @@ const fetchMaxTrade = async (
     case Exchanges.UNISWAPV3MEDIUM:
       data = await getUniswapV3Quote(
         provider,
-        tokenAddress,
+        getAddress(tokenAddress),
         ether(maxSlippage),
         FeeAmount.MEDIUM
       );
@@ -62,7 +63,7 @@ const fetchMaxTrade = async (
     case Exchanges.UNISWAPV3HIGH:
       data = await getUniswapV3Quote(
         provider,
-        tokenAddress,
+        getAddress(tokenAddress),
         ether(maxSlippage),
         FeeAmount.HIGH
       );
@@ -70,27 +71,25 @@ const fetchMaxTrade = async (
     case Exchanges.UNISWAPV2:
       data = await getUniswapV2Quote(
         provider,
-        tokenAddress,
+        getAddress(tokenAddress),
         ether(maxSlippage)
       );
       break;
     case Exchanges.SUSHIWAP:
       data = await getSushiswapQuote(
         provider,
-        tokenAddress,
+        getAddress(tokenAddress),
         ether(maxSlippage)
       );
       break;
     case Exchanges.KYBERCLASSIC:
         data = await getKyberDMMQuote(
           provider,
-          tokenAddress,
+          getAddress(tokenAddress),
           ether(maxSlippage)
         );
         break;
   }
-  console.log(exchange)
-  console.log(data)
   return BigNumber.from(data?.size || "0");
 };
 

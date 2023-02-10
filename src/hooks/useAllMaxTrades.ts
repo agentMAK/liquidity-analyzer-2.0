@@ -14,12 +14,14 @@ const useAllMaxTrade = (token:Token, maxSlippage: number, exchanges:Exchanges[] 
       return {
         queryKey: ["fetchMaxTrade", token.address, exchange, maxSlippage],
         queryFn: async () =>
-          formatToken(await fetchMaxTrade(token.address, exchange, maxSlippage, provider),token.decimals)
+          formatToken(await fetchMaxTrade(token.address, exchange, maxSlippage, provider),token.decimals),
+          enabled: exchanges.length > 0,
+          refetchOnWindowFocus: false,
       };
     })
   );
 
-  return allMaxTrades;
+  return {data: allMaxTrades, isAllLoaded: allMaxTrades.every((maxTrade) => maxTrade.isLoading === false)};
 
 };
 

@@ -18,13 +18,13 @@ const useUniswapV2Liquidity = (token: Token) => {
   let tokenBalance = useBalance({
     address: poolAddress.data as `0x${string}`,
     token: token.address as `0x${string}`,
-    enabled: poolAddress.isFetched,
+    enabled: poolAddress.isFetched || !poolAddress.isError,
   });
 
   const wethBalance = useBalance({
     address: poolAddress.data as `0x${string}`,
     token: WETH,
-    enabled: poolAddress.isFetched,
+    enabled: poolAddress.isFetched || !poolAddress.isError,
   });
   const formattedTokenBalance = formatToken(tokenBalance.data?.value, token.decimals)
 

@@ -4,6 +4,7 @@ import DataTable, { DTd, DTh } from "@components/DataTable";
 import useTokenPairTVL from "@hooks/useTokenPairTVL";
 import { Exchanges } from "@utils/constants/exchanges";
 import { Token } from "@utils/constants/tokens";
+import { BigNumber } from "ethers";
 import MaxTradeTable from "./components/MaxTradeTable";
 import MaxTradeTableBlank from "./components/MaxTradeTableBlank";
 import TVLTableRow from "./components/TVLTableRow";
@@ -19,6 +20,7 @@ const TokenLiquidityContainer = ({
 }: TokenLiquidityContainerProps): JSX.Element => {
 
   const tokenTVL: any = useTokenPairTVL(token);
+  const sortedExchanges = tokenTVL.isLoading ?  Object.values(Exchanges) : Object.values(tokenTVL.data).sort((a:any, b:any) => {return b.tvl.gt(a.tvl) ? 1 : -1})
 
 
   return (
@@ -37,13 +39,12 @@ const TokenLiquidityContainer = ({
             </Tr>
           </Thead>
           <Tbody>
-              {Object.values(Exchanges).map((exchange, index) => {
-                  if (tokenTVL.data[exchange])
+              {sortedExchanges.map((exchange:any, index) => {
                     return (
                       <TVLTableRow
                         key={index}
-                        exchange={exchange}
-                        tvl={tokenTVL.data[exchange].tvl}
+                        exchange={exchange.exchange}
+                        tvl={exchange.tvl}
                         isLoading={tokenTVL.isLoading}
                         isError={tokenTVL.isError}
                       />
@@ -57,7 +58,7 @@ const TokenLiquidityContainer = ({
       ) : (
         <MaxTradeTable
           token={token}
-          exchanges={Object.keys(tokenTVL.data).map(exchangeValue => exchangeValue as Exchanges)}
+          exchanges={sortedExchanges.map((exchange:any) => {return exchange.exchange})}
           slippage={slippage}
         />
       )}

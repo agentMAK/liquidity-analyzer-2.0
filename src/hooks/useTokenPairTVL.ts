@@ -5,14 +5,12 @@ import { Token, WETH } from "@utils/constants/tokens";
 import { BigNumber } from "ethers";
 import useUniswapV2Liquidity from "./Liquidity/useUniswapV2Liquidity";
 import useUniswapV3Liquidity from "./Liquidity/useUniswapV3Liquidity";
-import useCoinGeckoPrice from "./CoinGecko/useCoinGeckoPrice";
 import useSushiswapLiquidity from "./Liquidity/useSushiswapLiquidity";
-import useKyberLiquidity from "./Liquidity/useKyberLiquidity";
 import useKyberClassicLiquidity from "./Liquidity/useKyberClassicLiquidity";
+import useCoinGeckoPrices from "./CoinGecko/useCoinGeckoPrices";
 
 const useTokenPairTVL = (token:Token) => {
-  const coinGeckoTokenPrice = useCoinGeckoPrice(token.address);
-  const coinGeckoEthPrice = useCoinGeckoPrice(WETH);
+  const coinGeckoWETHTokenPrice = useCoinGeckoPrices([token.address,WETH]);
 
   const fetchLiquidity: any = {
     [Exchanges.UNISWAPV3LOW]: useUniswapV3Liquidity(
@@ -36,8 +34,8 @@ const useTokenPairTVL = (token:Token) => {
     if (tokenBalance === undefined || tokenBalance.isZero())
       return BigNumber.from("0");
 
-    const tokenTVL = mulBigNumbers(tokenBalance, coinGeckoTokenPrice.data);
-    const wethTVL = mulBigNumbers(wethBalance, coinGeckoEthPrice.data);
+    const tokenTVL = mulBigNumbers(tokenBalance, coinGeckoWETHTokenPrice.isFetched && !coinGeckoWETHTokenPrice.isError  ? coinGeckoWETHTokenPrice.data[token.address]: null);
+    const wethTVL = mulBigNumbers(wethBalance, coinGeckoWETHTokenPrice.isFetched && !coinGeckoWETHTokenPrice.isError ? coinGeckoWETHTokenPrice.data[WETH] : null);
 
     return tokenTVL.add(wethTVL);
   };
@@ -45,27 +43,25 @@ const useTokenPairTVL = (token:Token) => {
   let tokenPairTVLs: any = {};
 
   Object.values(Exchanges).map((exchange) => {
-    if (fetchLiquidity[exchange].data?.isTokenPair) {
       tokenPairTVLs[exchange] = {
         tvl: calculateTVL(
           fetchLiquidity[exchange].data.tokenBalance,
           fetchLiquidity[exchange].data.wethBalance
         ),
-      };
+        isTokenPair:fetchLiquidity[exchange].data?.isTokenPair,
+        exchange:exchange,
     }
   });
 
   return {
     data: tokenPairTVLs,
     isError:
-      coinGeckoTokenPrice.isError ||
-      coinGeckoEthPrice.isError ||
+      coinGeckoWETHTokenPrice.isError ||
       !Object.values(fetchLiquidity).every(
         (exchange: any) => !exchange.isError
       ),
     isLoading:
-      coinGeckoTokenPrice.isLoading ||
-      coinGeckoEthPrice.isLoading ||
+      coinGeckoWETHTokenPrice.isLoading ||
       !Object.values(fetchLiquidity).every(
         (exchange: any) => !exchange.isLoading
       ),

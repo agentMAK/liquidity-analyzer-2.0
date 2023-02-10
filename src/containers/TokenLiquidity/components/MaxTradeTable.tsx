@@ -1,7 +1,6 @@
 import { Box, Tbody, Thead, Tr } from "@chakra-ui/react";
 import DataTable, { DTd, DTh } from "@components/DataTable";
-import SlippageMessage from "@components/SlippageMessage";
-import useCoinGeckoPrice from "@hooks/CoinGecko/useCoinGeckoPrice";
+import useCoinGeckoPrices from "@hooks/CoinGecko/useCoinGeckoPrices";
 import useAllMaxTrade from "@hooks/useAllMaxTrades";
 import { bigNumberToDecimal, formatCurrency, mulBigNumbers } from "@utils/bigNumbers";
 import { Exchanges } from "@utils/constants/exchanges";
@@ -18,8 +17,9 @@ const MaxTradeTable = ({
   exchanges,
   slippage,
 }: MaxTradeTableProps): JSX.Element => {
+
   const maxTrade = useAllMaxTrade(token, slippage,exchanges);
-  const tokenPrice = useCoinGeckoPrice(token.address);
+  const tokenPrice = useCoinGeckoPrices([token.address]);
 
   return (
     <Box
@@ -38,22 +38,22 @@ const MaxTradeTable = ({
           </Tr>
         </Thead>
         <Tbody>
-        {Object.values(exchanges).map((exchange, index) => {
+        {exchanges.map((exchange, index) => {
             return (
               <Tr key={index}>
                 <DTd
-                  isLoaded={!maxTrade[index].isLoading && !tokenPrice.isLoading}
-                  isError={maxTrade[index].isError || tokenPrice.isError}
+                  isLoaded={!maxTrade.data[index].isLoading && !tokenPrice.isLoading}
+                  isError={maxTrade.data[index].isError || tokenPrice.isError}
                 >
-                  {bigNumberToDecimal(maxTrade[index].data, 2)}
+                  {bigNumberToDecimal(maxTrade.data[index].data, 2)}
                 </DTd>
                 <DTd
-                  isLoaded={!maxTrade[index].isLoading && !tokenPrice.isLoading}
-                  isError={maxTrade[index].isError || tokenPrice.isError}
+                  isLoaded={!maxTrade.data[index].isLoading && !tokenPrice.isLoading}
+                  isError={maxTrade.data[index].isError || tokenPrice.isError}
                 >
                   $
                   {formatCurrency(
-                    mulBigNumbers(tokenPrice.data, maxTrade[index].data)
+                    mulBigNumbers(tokenPrice.isFetched && !tokenPrice.isError ? tokenPrice.data[token.address] : null, maxTrade.data[index].data)
                   )}
                 </DTd>
               </Tr>

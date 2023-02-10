@@ -33,10 +33,10 @@ export const bigNumberToDecimal = (
   return formattedValue.toFixed(precison);
 };
 
-function formatNumberWithCommas(x: string) {
+export function formatNum(x: string|number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export const formatCurrency = (value: BigNumber = BigNumber.from("0")) => {
-  return formatNumberWithCommas(bigNumberToDecimal(value, 2));
+  return formatNum(bigNumberToDecimal(value, 2));
 };

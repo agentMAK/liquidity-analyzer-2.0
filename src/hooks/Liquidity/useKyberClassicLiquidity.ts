@@ -4,9 +4,8 @@ import { erc20ABI } from "wagmi";
 
 import { MINIMUM_LIQUIDITY } from "@utils/constants/exchanges";
 import { BigNumber } from "ethers";
-import { KYBER_ELASTIC_FACTORY, KYBER_FACTORY } from "@utils/contracts/addresses";
-import { KYBER_ELASTIC_FACTORY_ABI, KYBER_FACTORY_ABI } from "@utils/contracts/abis";
-import { formatUnits, parseUnits } from "ethers/lib/utils.js";
+import { KYBER_FACTORY } from "@utils/contracts/addresses";
+import { KYBER_FACTORY_ABI } from "@utils/contracts/abis";
 import { formatToken } from "@utils/formatting";
 
 const useKyberClassicLiquidity = (token: Token) => {
@@ -26,7 +25,7 @@ const useKyberClassicLiquidity = (token: Token) => {
       abi: erc20ABI,
       functionName: "balanceOf",
       args: [poolAddress as unknown as `0x${string}`],
-      enabled: poolAddresses.isFetched,
+      enabled: poolAddresses.isFetched && !poolAddresses.isError,
     })),
   });
 
@@ -46,7 +45,7 @@ const useKyberClassicLiquidity = (token: Token) => {
   const wethBalance = useBalance({
     address: poolAddress as `0x${string}`,
     token: WETH,
-    enabled: poolAddresses.isFetched,
+    enabled: poolAddresses.isFetched && !poolAddresses.isError,
   });
 
   const formattedTokenBalance = formatToken(tokenBalance as BigNumber, token.decimals)

@@ -13,11 +13,9 @@ import {
 import SlippageMessage from "@components/SlippageMessage";
 import TokenDropBox from "@components/TokenDropBox";
 import TokenLiquidityContainer from "@containers/TokenLiquidity";
-import useKyberClassicLiquidity from "@hooks/Liquidity/useKyberClassicLiquidity";
-import useKyberLiquidity from "@hooks/Liquidity/useKyberLiquidity";
-import useAllMaxTradeNew from "@hooks/useAllMaxTrades";
 import useUniswapTokenList from "@hooks/useUniswapTokenList";
 import {
+  DEFAULTSLIPPAGE,
   DEFUALT_TOKEN,
   Token,
 } from "@utils/constants/tokens";
@@ -27,7 +25,7 @@ import { useState } from "react";
 function Index(): JSX.Element {
   const [token, setToken] = useState<Token>(DEFUALT_TOKEN);
   const uniswapTokenList = useUniswapTokenList();
-  const [value, setValue] = useState("0.5");
+  const [slippage, setSlippage] = useState(DEFAULTSLIPPAGE);
 
   return (
     <Box maxWidth={["1200px"]} margin={"auto"} px={"25px"}>
@@ -73,10 +71,10 @@ function Index(): JSX.Element {
               maxW={32}
               defaultValue={0.5}
               step={0.5}
-              onChange={(valueString) => setValue(valueString.replace("%",''))}
-              value={value+"%"}
+              onChange={(valueString) => setSlippage(parseFloat(valueString.replace("%",'')))}
+              value={slippage+"%"}
               min={0.1}
-              max={20}
+              max={50}
               precision={1}
             >
               <NumberInputField />
@@ -88,7 +86,7 @@ function Index(): JSX.Element {
           </Box>
         </Flex>
       </Box>
-      <TokenLiquidityContainer token={token} slippage={parseFloat(value)} />
+      <TokenLiquidityContainer token={token} slippage={slippage} />
     </Box>
   );
 }
