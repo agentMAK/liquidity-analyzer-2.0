@@ -36,7 +36,7 @@ export const DTh = (props: any): JSX.Element => {
 
 export const DTd = (props: any): JSX.Element => {
   return (
-    <Td>
+    <Td _groupHover={(props.onHover) ? {bg:'gray.100'} : {}}>
       <Skeleton fadeDuration={1} isLoaded={props.isLoaded}>
         {props.isError ? (
           props.isTitle ? (
@@ -67,4 +67,6 @@ DTd.defaultProps = {
   isLoaded: true,
   isError: false,
   isTitle: false,
+  children: 'Loading..',
+  onHover: true,
 };

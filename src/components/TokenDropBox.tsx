@@ -18,13 +18,17 @@ import { useState } from "react";
 import { Token, TokenList } from "@utils/constants/tokens";
 
 type TokenDropBoxProps = {
-  tokenList:TokenList;
+  tokenList: TokenList;
   setToken: (token: Token) => void;
+  isError: boolean;
+  isLoading: boolean;
 };
 
 const TokenDropBox = ({
   tokenList,
   setToken,
+  isError,
+  isLoading,
 }: TokenDropBoxProps): JSX.Element => {
   const searchIcon = (
     <Icon boxSize="16px" viewBox="0 0 24 24" focusable="false">
@@ -38,6 +42,7 @@ const TokenDropBox = ({
   const [inputText, setInputText] = useState("");
   const [menuIcon, setMenuIcon] = useState<JSX.Element>(searchIcon);
 
+  tokenList = isError || isLoading ? [] : tokenList;
 
   return (
     <Stack
@@ -51,12 +56,18 @@ const TokenDropBox = ({
         openOnFocus
         rollNavigation
         listAllValuesOnFocus
+        maxSuggestions={20}
         onChange={(tokenValue) => {
-          const token:Token = tokenList[parseInt(tokenValue)]
+          const token: Token = tokenList[parseInt(tokenValue)];
           setToken(token);
           setInputText(token.symbol);
           setMenuIcon(
-            <Image src={token.logoURI} boxSize={"16px"} alt={token.name} borderRadius={'20px'} />
+            <Image
+              src={token.logoURI}
+              boxSize={"16px"}
+              alt={token.name}
+              borderRadius={"20px"}
+            />
           );
         }}
       >
@@ -126,7 +137,9 @@ const TokenDropBox = ({
                   alt="Index Coop Logo"
                   height={"20px"}
                   mr={"8px"}
-                  borderRadius={'20px'}
+                  borderRadius={"20px"}
+                  fallbackSrc={'/images/tokenIcon.svg'}
+                  fallbackStrategy={'onError'}
                 />
                 {token.name} ({token.symbol})
               </AutoCompleteItem>
@@ -139,3 +152,8 @@ const TokenDropBox = ({
 };
 
 export default TokenDropBox;
+
+TokenDropBox.defaultProps = {
+  isError: false,
+  isLoading: false,
+};

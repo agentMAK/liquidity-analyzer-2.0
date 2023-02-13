@@ -8,11 +8,16 @@ import useUniswapV3Liquidity from "./Liquidity/useUniswapV3Liquidity";
 import useSushiswapLiquidity from "./Liquidity/useSushiswapLiquidity";
 import useKyberClassicLiquidity from "./Liquidity/useKyberClassicLiquidity";
 import useCoinGeckoPrices from "./CoinGecko/useCoinGeckoPrices";
+import useBalancerV1Liquidity from "./Liquidity/useBalancerV1Liquidity";
 
 const useTokenPairTVL = (token:Token) => {
   const coinGeckoWETHTokenPrice = useCoinGeckoPrices([token.address,WETH]);
 
   const fetchLiquidity: any = {
+    [Exchanges.UNISWAPV3LOWEST]: useUniswapV3Liquidity(
+      token,
+      FeeAmount.LOWEST
+    ),
     [Exchanges.UNISWAPV3LOW]: useUniswapV3Liquidity(
       token,
       FeeAmount.LOW
@@ -28,6 +33,7 @@ const useTokenPairTVL = (token:Token) => {
     [Exchanges.UNISWAPV2]: useUniswapV2Liquidity(token),
     [Exchanges.SUSHIWAP]: useSushiswapLiquidity(token),
     [Exchanges.KYBERCLASSIC]: useKyberClassicLiquidity(token),
+    [Exchanges.BALANCERV1]: useBalancerV1Liquidity(token)
   };
 
   const calculateTVL = (tokenBalance: BigNumber, wethBalance: BigNumber) => {
@@ -50,6 +56,7 @@ const useTokenPairTVL = (token:Token) => {
         ),
         isTokenPair:fetchLiquidity[exchange].data?.isTokenPair,
         exchange:exchange,
+        poolAddress:fetchLiquidity[exchange].data?.pairAddress,
     }
   });
 

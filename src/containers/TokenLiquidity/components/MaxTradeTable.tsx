@@ -2,7 +2,7 @@ import { Box, Tbody, Thead, Tr } from "@chakra-ui/react";
 import DataTable, { DTd, DTh } from "@components/DataTable";
 import useCoinGeckoPrices from "@hooks/CoinGecko/useCoinGeckoPrices";
 import useAllMaxTrade from "@hooks/useAllMaxTrades";
-import { bigNumberToDecimal, formatCurrency, mulBigNumbers } from "@utils/bigNumbers";
+import { bigNumberToDecimal, formatCurrency, formatNum, mulBigNumbers } from "@utils/bigNumbers";
 import { Exchanges } from "@utils/constants/exchanges";
 import { Token } from "@utils/constants/tokens";
 
@@ -40,12 +40,12 @@ const MaxTradeTable = ({
         <Tbody>
         {exchanges.map((exchange, index) => {
             return (
-              <Tr key={index}>
+              <Tr key={index} role='group'>
                 <DTd
                   isLoaded={!maxTrade.data[index].isLoading && !tokenPrice.isLoading}
                   isError={maxTrade.data[index].isError || tokenPrice.isError}
                 >
-                  {bigNumberToDecimal(maxTrade.data[index].data, 2)}
+                  {formatNum(bigNumberToDecimal(maxTrade.data[index].data, 2))}
                 </DTd>
                 <DTd
                   isLoaded={!maxTrade.data[index].isLoading && !tokenPrice.isLoading}

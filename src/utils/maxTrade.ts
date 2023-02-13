@@ -44,6 +44,14 @@ const fetchMaxTrade = async (
 
   let data;
   switch (exchange) {
+    case Exchanges.UNISWAPV3LOWEST:
+      data = await getUniswapV3Quote(
+        provider,
+        getAddress(tokenAddress),
+        ether(maxSlippage),
+        FeeAmount.LOWEST
+      );
+      break;
     case Exchanges.UNISWAPV3LOW:
       data = await getUniswapV3Quote(
         provider,
@@ -89,6 +97,13 @@ const fetchMaxTrade = async (
           ether(maxSlippage)
         );
         break;
+    case Exchanges.BALANCERV1:
+      data = await getBalancerV1Quote(
+        provider,
+        getAddress(tokenAddress),
+        ether(maxSlippage)
+      );
+      break;
   }
   return BigNumber.from(data?.size || "0");
 };

@@ -3,12 +3,14 @@ import FeeTierIcon from "@components/FeeTierIcon";
 import { parseUnits } from "ethers/lib/utils.js";
 
 export enum Exchanges {
+  UNISWAPV3LOWEST = "Uniswap V3 (0.01%)",
   UNISWAPV3LOW = "Uniswap V3 (0.05%)",
   UNISWAPV3MEDIUM = "Uniswap V3 (0.3%)",
   UNISWAPV3HIGH = "Uniswap V3 (1%)",
   UNISWAPV2 = "Uniswap V2",
   SUSHIWAP = "Sushiswap",
   KYBERCLASSIC = 'Kyber',
+  BALANCERV1 = 'Balancer V1',
 }
 
 export const DisplayExchange = {
@@ -30,6 +32,12 @@ export const DisplayExchange = {
       <FeeTierIcon>1%</FeeTierIcon>
     </Flex>
   ),
+  [Exchanges.UNISWAPV3LOWEST]: (
+    <Flex alignItems={"center"}>
+      Uniswap V3
+      <FeeTierIcon>0.01%</FeeTierIcon>
+    </Flex>
+  ),
   [Exchanges.UNISWAPV2]: "Uniswap V2",
   [Exchanges.SUSHIWAP]: "Sushiswap",
   [Exchanges.KYBERCLASSIC]: (
@@ -38,6 +46,12 @@ export const DisplayExchange = {
       <FeeTierIcon>Classic</FeeTierIcon>
     </Flex>
   ),
+  [Exchanges.BALANCERV1]: (
+    <Flex alignItems={"center"}>
+      Balancer
+      <FeeTierIcon>V1</FeeTierIcon>
+    </Flex>
+  )
 };
 
 export const FLAGGEDPOOLS = [

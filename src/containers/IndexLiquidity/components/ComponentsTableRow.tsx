@@ -1,6 +1,7 @@
 import {
   Box,
   Flex,
+  Link,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -42,9 +43,9 @@ const ComponentTableRow = ({
   const dollarChange = percentageChange * 0.01 * indexMarketCap
 
   return (
-    <Tr>
+    <Tr role='group'>
       <DTd isLoaded={!isLoading} isError={isError} isTitle={true}>
-        <Flex height={'52px'} alignItems={'center'}>{component.symbol}</Flex>
+         <Flex height={'52px'} alignItems={'center'}>{isError ? component.symbol : <Link href={"https://etherscan.io/address/"+component.address} _hover={{ textDecoration: "none" }}>{component.symbol}</Link>}</Flex>
       </DTd>
       <DTd isLoaded={!isLoading}>
         {parseFloat(component.percent_of_set).toFixed(2)}

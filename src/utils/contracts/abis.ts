@@ -322,198 +322,381 @@ export const KYBER_ELASTIC_FACTORY_ABI = [
   },
 ];
 
-
 export const KYBER_FACTORY_ABI = [
-    {
-      inputs: [
-        { internalType: 'address', name: '_feeToSetter', type: 'address' },
-      ],
-      stateMutability: 'nonpayable',
-      type: 'constructor',
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: 'contract IERC20',
-          name: 'token0',
-          type: 'address',
-        },
-        {
-          indexed: true,
-          internalType: 'contract IERC20',
-          name: 'token1',
-          type: 'address',
-        },
-        {
-          indexed: false,
-          internalType: 'address',
-          name: 'pool',
-          type: 'address',
-        },
-        {
-          indexed: false,
-          internalType: 'uint32',
-          name: 'ampBps',
-          type: 'uint32',
-        },
-        {
-          indexed: false,
-          internalType: 'uint256',
-          name: 'totalPool',
-          type: 'uint256',
-        },
-      ],
-      name: 'PoolCreated',
-      type: 'event',
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: 'address',
-          name: 'feeTo',
-          type: 'address',
-        },
-        {
-          indexed: false,
-          internalType: 'uint16',
-          name: 'governmentFeeBps',
-          type: 'uint16',
-        },
-      ],
-      name: 'SetFeeConfiguration',
-      type: 'event',
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: 'address',
-          name: 'feeToSetter',
-          type: 'address',
-        },
-      ],
-      name: 'SetFeeToSetter',
-      type: 'event',
-    },
-    {
-      inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-      name: 'allPools',
-      outputs: [{ internalType: 'address', name: '', type: 'address' }],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [],
-      name: 'allPoolsLength',
-      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'contract IERC20', name: 'tokenA', type: 'address' },
-        { internalType: 'contract IERC20', name: 'tokenB', type: 'address' },
-        { internalType: 'uint32', name: 'ampBps', type: 'uint32' },
-      ],
-      name: 'createPool',
-      outputs: [{ internalType: 'address', name: 'pool', type: 'address' }],
-      stateMutability: 'nonpayable',
-      type: 'function',
-    },
-    {
-      inputs: [],
-      name: 'feeToSetter',
-      outputs: [{ internalType: 'address', name: '', type: 'address' }],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [],
-      name: 'getFeeConfiguration',
-      outputs: [
-        { internalType: 'address', name: '_feeTo', type: 'address' },
-        { internalType: 'uint16', name: '_governmentFeeBps', type: 'uint16' },
-      ],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'contract IERC20', name: 'token0', type: 'address' },
-        { internalType: 'contract IERC20', name: 'token1', type: 'address' },
-        { internalType: 'uint256', name: 'index', type: 'uint256' },
-      ],
-      name: 'getPoolAtIndex',
-      outputs: [{ internalType: 'address', name: 'pool', type: 'address' }],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'contract IERC20', name: 'token0', type: 'address' },
-        { internalType: 'contract IERC20', name: 'token1', type: 'address' },
-      ],
-      name: 'getPools',
-      outputs: [
-        { internalType: 'address[]', name: '_tokenPools', type: 'address[]' },
-      ],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'contract IERC20', name: 'token0', type: 'address' },
-        { internalType: 'contract IERC20', name: 'token1', type: 'address' },
-      ],
-      name: 'getPoolsLength',
-      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'contract IERC20', name: '', type: 'address' },
-        { internalType: 'contract IERC20', name: '', type: 'address' },
-      ],
-      name: 'getUnamplifiedPool',
-      outputs: [{ internalType: 'address', name: '', type: 'address' }],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'contract IERC20', name: 'token0', type: 'address' },
-        { internalType: 'contract IERC20', name: 'token1', type: 'address' },
-        { internalType: 'address', name: 'pool', type: 'address' },
-      ],
-      name: 'isPool',
-      outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-      stateMutability: 'view',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'address', name: '_feeTo', type: 'address' },
-        { internalType: 'uint16', name: '_governmentFeeBps', type: 'uint16' },
-      ],
-      name: 'setFeeConfiguration',
-      outputs: [],
-      stateMutability: 'nonpayable',
-      type: 'function',
-    },
-    {
-      inputs: [
-        { internalType: 'address', name: '_feeToSetter', type: 'address' },
-      ],
-      name: 'setFeeToSetter',
-      outputs: [],
-      stateMutability: 'nonpayable',
-      type: 'function',
-    },
-  ]
-  
+  {
+    inputs: [
+      { internalType: "address", name: "_feeToSetter", type: "address" },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "contract IERC20",
+        name: "token0",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "contract IERC20",
+        name: "token1",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "pool",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "ampBps",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "totalPool",
+        type: "uint256",
+      },
+    ],
+    name: "PoolCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "feeTo",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint16",
+        name: "governmentFeeBps",
+        type: "uint16",
+      },
+    ],
+    name: "SetFeeConfiguration",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "feeToSetter",
+        type: "address",
+      },
+    ],
+    name: "SetFeeToSetter",
+    type: "event",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "allPools",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "allPoolsLength",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "contract IERC20", name: "tokenA", type: "address" },
+      { internalType: "contract IERC20", name: "tokenB", type: "address" },
+      { internalType: "uint32", name: "ampBps", type: "uint32" },
+    ],
+    name: "createPool",
+    outputs: [{ internalType: "address", name: "pool", type: "address" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "feeToSetter",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getFeeConfiguration",
+    outputs: [
+      { internalType: "address", name: "_feeTo", type: "address" },
+      { internalType: "uint16", name: "_governmentFeeBps", type: "uint16" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "contract IERC20", name: "token0", type: "address" },
+      { internalType: "contract IERC20", name: "token1", type: "address" },
+      { internalType: "uint256", name: "index", type: "uint256" },
+    ],
+    name: "getPoolAtIndex",
+    outputs: [{ internalType: "address", name: "pool", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "contract IERC20", name: "token0", type: "address" },
+      { internalType: "contract IERC20", name: "token1", type: "address" },
+    ],
+    name: "getPools",
+    outputs: [
+      { internalType: "address[]", name: "_tokenPools", type: "address[]" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "contract IERC20", name: "token0", type: "address" },
+      { internalType: "contract IERC20", name: "token1", type: "address" },
+    ],
+    name: "getPoolsLength",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "contract IERC20", name: "", type: "address" },
+      { internalType: "contract IERC20", name: "", type: "address" },
+    ],
+    name: "getUnamplifiedPool",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "contract IERC20", name: "token0", type: "address" },
+      { internalType: "contract IERC20", name: "token1", type: "address" },
+      { internalType: "address", name: "pool", type: "address" },
+    ],
+    name: "isPool",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_feeTo", type: "address" },
+      { internalType: "uint16", name: "_governmentFeeBps", type: "uint16" },
+    ],
+    name: "setFeeConfiguration",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_feeToSetter", type: "address" },
+    ],
+    name: "setFeeToSetter",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
+export const BALANCER_OCR_ABI = [
+  {
+    inputs: [{ internalType: "address", name: "_bfactory", type: "address" }],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token1",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token2",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "oldIndices",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "newIndices",
+        type: "bytes32",
+      },
+    ],
+    name: "IndicesUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "pool", type: "address" },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token1",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "token2",
+        type: "address",
+      },
+    ],
+    name: "PoolTokenPairAdded",
+    type: "event",
+  },
+  {
+    constant: false,
+    inputs: [
+      { internalType: "address", name: "token1", type: "address" },
+      { internalType: "address", name: "token2", type: "address" },
+      { internalType: "address[]", name: "pools", type: "address[]" },
+    ],
+    name: "_getEffectiveLiquidityForPoolsPurge",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "effectiveLiquidity",
+        type: "uint256[]",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      { internalType: "address", name: "pool", type: "address" },
+      { internalType: "address", name: "token1", type: "address" },
+      { internalType: "address", name: "token2", type: "address" },
+    ],
+    name: "addPoolPair",
+    outputs: [{ internalType: "uint256", name: "listed", type: "uint256" }],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      { internalType: "address[]", name: "pools", type: "address[]" },
+      { internalType: "address", name: "token1", type: "address" },
+      { internalType: "address", name: "token2", type: "address" },
+    ],
+    name: "addPools",
+    outputs: [{ internalType: "uint256[]", name: "listed", type: "uint256[]" }],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      { internalType: "address", name: "fromToken", type: "address" },
+      { internalType: "address", name: "destToken", type: "address" },
+    ],
+    name: "getBestPools",
+    outputs: [{ internalType: "address[]", name: "pools", type: "address[]" }],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      { internalType: "address", name: "fromToken", type: "address" },
+      { internalType: "address", name: "destToken", type: "address" },
+      { internalType: "uint256", name: "limit", type: "uint256" },
+    ],
+    name: "getBestPoolsWithLimit",
+    outputs: [{ internalType: "address[]", name: "pools", type: "address[]" }],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      { internalType: "address", name: "pool", type: "address" },
+      { internalType: "address", name: "fromToken", type: "address" },
+      { internalType: "address", name: "destToken", type: "address" },
+    ],
+    name: "getPairInfo",
+    outputs: [
+      { internalType: "uint256", name: "weight1", type: "uint256" },
+      { internalType: "uint256", name: "weight2", type: "uint256" },
+      { internalType: "uint256", name: "swapFee", type: "uint256" },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      { internalType: "address", name: "fromToken", type: "address" },
+      { internalType: "address", name: "destToken", type: "address" },
+      { internalType: "uint256", name: "offset", type: "uint256" },
+      { internalType: "uint256", name: "limit", type: "uint256" },
+    ],
+    name: "getPoolsWithLimit",
+    outputs: [{ internalType: "address[]", name: "result", type: "address[]" }],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      { internalType: "address[]", name: "tokens", type: "address[]" },
+      { internalType: "uint256", name: "lengthLimit", type: "uint256" },
+    ],
+    name: "sortPools",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      { internalType: "address[]", name: "tokens", type: "address[]" },
+      { internalType: "uint256", name: "lengthLimit", type: "uint256" },
+    ],
+    name: "sortPoolsWithPurge",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];

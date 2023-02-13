@@ -17,6 +17,7 @@
     "@fontsource/ibm-plex-sans": "^4.5.13",
     "@indexcoop/index-coop-smart-contracts": "^0.13.1",
     "@indexcoop/index-rebalance-utils": "^1.0.0",
+    "@indexcoop/tokenlists": "^1.26.0",
     "@uniswap/sdk-core": "^3.1.1",
     "@uniswap/v2-sdk": "^3.0.1",
     "@uniswap/v3-sdk": "^3.9.0",

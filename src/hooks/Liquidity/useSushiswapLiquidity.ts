@@ -40,8 +40,8 @@ const useSushiswapLiquidity = (token:Token) => {
       tokenBalance: formattedTokenBalance,
       wethBalance: wethBalance.data?.value,
     },
-    isError: tokenBalance.isError || wethBalance.isError,
-    isLoading: tokenBalance.isLoading && wethBalance.isLoading,
+    isError: tokenBalance.isError || wethBalance.isError || poolAddress.isError,
+    isLoading: tokenBalance.isLoading && wethBalance.isLoading || poolAddress.isLoading,
   };
 };
 

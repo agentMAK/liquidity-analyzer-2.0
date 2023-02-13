@@ -21,6 +21,8 @@ import {
 } from "@utils/constants/tokens";
 import { trimAddress } from "@utils/formatting";
 import { useState } from "react";
+import { MainnetTokens } from "@indexcoop/tokenlists";
+import { mainnet } from "wagmi";
 
 function Index(): JSX.Element {
   const [token, setToken] = useState<Token>(DEFUALT_TOKEN);
@@ -61,8 +63,10 @@ function Index(): JSX.Element {
         </Text>
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <TokenDropBox
-            tokenList={uniswapTokenList.isLoading ? [] : uniswapTokenList.data}
+            tokenList={MainnetTokens}
             setToken={setToken}
+            isError={uniswapTokenList.isError}
+            isLoading={uniswapTokenList.isLoading}
           />
           <Box>
             <SlippageMessage />

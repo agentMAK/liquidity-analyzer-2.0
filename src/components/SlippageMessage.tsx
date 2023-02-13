@@ -24,14 +24,15 @@ import {
 } from "@chakra-ui/react";
 
 const SlippageMessage = (props: any): JSX.Element => {
+  const { onOpen, onClose, isOpen, onToggle } = useDisclosure();
   return (
-    <Flex
-      color={"white"}
-      textTransform={"none"}
-      mb={"4px"}
-      fontSize={"12px"}
-    >
-      <Popover placement="bottom-end">
+    <Flex color={"white"} textTransform={"none"} mb={"4px"} fontSize={"12px"}>
+      <Popover
+        placement="bottom-end"
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      >
         <PopoverTrigger>
           <Button
             bg={"none"}
@@ -76,7 +77,7 @@ const SlippageMessage = (props: any): JSX.Element => {
           </PopoverContent>
         </Portal>
       </Popover>
-      <WarningIcon ml="2px" boxSize={"9px"} color="white" />
+      <Link onClick={onToggle}><WarningIcon ml="2px" boxSize={"9px"} color="white" /></Link>
     </Flex>
   );
 };

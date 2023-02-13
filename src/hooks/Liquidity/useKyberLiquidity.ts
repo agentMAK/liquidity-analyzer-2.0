@@ -87,8 +87,8 @@ const useKyberLiquidity = (token: Token) => {
       tokenBalance: formattedTokenBalance,
       wethBalance: wethBalance.data?.value,
     },
-    isError: fetchPoolAddresses.isError || wethBalance.isError,
-    isLoading: fetchPoolAddresses.isLoading && wethBalance.isLoading,
+    isError: fetchPoolAddresses.isError || wethBalance.isError || tokenBalances.isError,
+    isLoading: fetchPoolAddresses.isLoading || wethBalance.isLoading || tokenBalances.isLoading,
   };
 
 };

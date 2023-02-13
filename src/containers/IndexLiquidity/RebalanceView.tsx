@@ -39,8 +39,6 @@ const RebalanceContainer = ({
     }
   }, [isLoading,tokenComponents]);
 
-  console.log(targets);
-
   let tokenWeightTotal =
     (!isLoading &&
       Object.values(tokenComponents).reduce(

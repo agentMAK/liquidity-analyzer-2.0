@@ -57,8 +57,8 @@ const useKyberClassicLiquidity = (token: Token) => {
       tokenBalance: formattedTokenBalance,
       wethBalance: wethBalance.data?.value,
     },
-    isError: poolAddresses.isError || wethBalance.isError,
-    isLoading: poolAddresses.isLoading && wethBalance.isLoading,
+    isError: poolAddresses.isError || wethBalance.isError || tokenBalances.isError,
+    isLoading: poolAddresses.isLoading || wethBalance.isLoading || tokenBalances.isLoading,
   };
 
 };

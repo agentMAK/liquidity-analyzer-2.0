@@ -47,7 +47,7 @@ const MaxTradeTableRow = ({
   const bestExchange = Object.values(Exchanges)[bestExchangeIndex as number];
 
   return (
-    <Tr>
+    <Tr role="group">
       <DTd isLoaded={maxTrade.isAllLoaded || isLoading}>
         <Flex alignItems={"center"} height={"52px"}>
           {DisplayExchange[bestExchange]}
@@ -67,10 +67,10 @@ const MaxTradeTableRow = ({
           )}
           {maxTrade.isAllLoaded && maxTrade.data.length > 0 && (
             <StatHelpText mt={"4px"}>
-              {bigNumberToDecimal(
+              {formatNum(bigNumberToDecimal(
                 maxTrade.data[bestExchangeIndex as number].data,
                 2
-              )}
+              ))}
             </StatHelpText>
           )}
         </Stat>
