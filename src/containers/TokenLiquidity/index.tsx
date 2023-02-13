@@ -45,8 +45,8 @@ const TokenLiquidityContainer = ({
                         exchange={tokenTVL.exchange}
                         tvl={tokenTVL.tvl}
                         address={tokenTVL.poolAddress}
-                        isLoading={tokenTVL.isLoading}
-                        isError={tokenTVL.isError}
+                        isLoading={tokenTVLs.isLoading}
+                        isError={tokenTVLs.isError}
                       />
                     );
                 })}

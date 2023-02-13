@@ -56,7 +56,7 @@ const TokenDropBox = ({
         openOnFocus
         rollNavigation
         listAllValuesOnFocus
-        maxSuggestions={20}
+        maxSuggestions={75}
         onChange={(tokenValue) => {
           const token: Token = tokenList[parseInt(tokenValue)];
           setToken(token);

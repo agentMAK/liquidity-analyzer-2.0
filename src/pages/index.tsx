@@ -22,11 +22,9 @@ import {
 import { trimAddress } from "@utils/formatting";
 import { useState } from "react";
 import { MainnetTokens } from "@indexcoop/tokenlists";
-import { mainnet } from "wagmi";
 
 function Index(): JSX.Element {
   const [token, setToken] = useState<Token>(DEFUALT_TOKEN);
-  const uniswapTokenList = useUniswapTokenList();
   const [slippage, setSlippage] = useState(DEFAULTSLIPPAGE);
 
   return (
@@ -65,8 +63,6 @@ function Index(): JSX.Element {
           <TokenDropBox
             tokenList={MainnetTokens}
             setToken={setToken}
-            isError={uniswapTokenList.isError}
-            isLoading={uniswapTokenList.isLoading}
           />
           <Box>
             <SlippageMessage />
