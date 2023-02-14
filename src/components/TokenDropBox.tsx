@@ -67,6 +67,8 @@ const TokenDropBox = ({
               boxSize={"16px"}
               alt={token.name}
               borderRadius={"20px"}
+              fallbackSrc={'/images/tokenIcon.svg'}
+              fallbackStrategy={'onError'}
             />
           );
         }}

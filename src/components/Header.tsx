@@ -46,7 +46,7 @@ const Header = (): JSX.Element => {
           <NavItem href="/index-liquidity">Index Liquidity</NavItem>
           <NavItem isDisabled>NAV Analyzer</NavItem>
         </Flex>
-        <Box></Box>
+        <Box width={'48px'}></Box>
       </Flex>
     </Box>
   );
